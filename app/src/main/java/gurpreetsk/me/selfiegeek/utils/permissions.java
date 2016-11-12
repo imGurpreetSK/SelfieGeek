@@ -6,14 +6,13 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
-import static gurpreetsk.me.selfiegeek.utils.Constants.MY_PERMISSIONS_REQUEST_ACCESS_CAMERA;
-import static gurpreetsk.me.selfiegeek.utils.Constants.MY_PERMISSIONS_REQUEST_RECORD_AUDIO;
-
 /**
  * Created by Gurpreet on 12/11/16.
  */
 
 public class permissions {
+
+    public static final int MY_PERMISSIONS_REQUEST_ACCESS_CAMERA = 1;
 
     public static void askCameraPermission(Activity context) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {

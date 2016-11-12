@@ -19,8 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TakeImageActivity"
-            android:noHistory="true" />
+            android:name=".TakeImageActivity" />
 
         <!--Camera activities-->
         <activity
