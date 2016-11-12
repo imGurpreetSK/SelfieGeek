@@ -21,6 +21,7 @@ android {
 
 repositories {
     jcenter()
+    maven { url "https://dl.bintray.com/drummer-aidan/maven" }
 
     flatDir {
         dirs 'libs'
@@ -42,5 +43,6 @@ dependencies {
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'com.android.support:support-v4:25.0.0'
     compile 'com.android.support:design:25.0.0'
+    compile 'com.afollestad:material-camera:0.4.4'
     testCompile 'junit:junit:4.12'
 }
