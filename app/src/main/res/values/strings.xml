@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Selfie Geek</string>
+    <string name="grid_image_description">User selfie stored in online database</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign Up</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
