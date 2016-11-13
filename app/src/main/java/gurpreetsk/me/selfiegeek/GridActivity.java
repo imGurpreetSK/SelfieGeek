@@ -34,7 +34,7 @@ public class GridActivity extends AppCompatActivity {
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
         final int PAGE_COUNT = 2;
-        private String tabTitles[] = new String[]{"Image", "Video"};
+        private String tabTitles[] = new String[] { "Image", "Video"};
 
         ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);

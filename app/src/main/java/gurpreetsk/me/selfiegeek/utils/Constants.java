@@ -16,5 +16,6 @@ public class Constants {
     public static final int CAMERA_RQ = 1002;
     public static final String SERVICE_EXTRA = "IntentServiceUri";
     public static final String SERVICE_FILENAME_EXTRA = "IntentServiceFileName";
+    public static final String BUNDLE_EXTRA = "Bundle";
 
 }

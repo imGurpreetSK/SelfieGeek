@@ -17,7 +17,6 @@ import com.kinvey.android.Client;
 
 import gurpreetsk.me.selfiegeek.service.UploadService;
 
-import static gurpreetsk.me.selfiegeek.utils.Constants.CAMERA_RQ;
 import static gurpreetsk.me.selfiegeek.utils.Constants.CAMERA_STILL;
 import static gurpreetsk.me.selfiegeek.utils.Constants.MY_PERMISSIONS_REQUEST_ACCESS_CAMERA;
 import static gurpreetsk.me.selfiegeek.utils.Constants.SERVICE_EXTRA;
@@ -68,20 +67,6 @@ public class TakeImageActivity extends AppCompatActivity {
             }
         }
 
-        if (requestCode == CAMERA_RQ) {
-            if (resultCode == RESULT_OK) {
-                Toast.makeText(this, "Video upload started", Toast.LENGTH_LONG).show();
-                Log.i(TAG, "onActivityResult: " + data.getDataString());
-                String name = data.getDataString().substring(71, 90);
-//                getFileFromCacheAndUpload(name, data.getData());
-//                finish();
-            } else if (data != null) {
-                Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
-                e.printStackTrace();
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }
-
     }
 
     private void getFileFromCacheAndUpload(final String fileName, Uri imagePath) {
@@ -102,6 +87,7 @@ public class TakeImageActivity extends AppCompatActivity {
             case MY_PERMISSIONS_REQUEST_ACCESS_CAMERA: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    camera.stillShot().start(CAMERA_STILL);
                 } else {
                     Toast.makeText(this, "Camera access permission needed to take image", Toast.LENGTH_SHORT).show();
                 }

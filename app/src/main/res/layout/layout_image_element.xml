@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<gurpreetsk.me.selfiegeek.ui.CustomImageView android:id="@+id/gridImageView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <ImageView
-        android:id="@+id/gridImageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:minHeight="@dimen/grid_image_min_height"
-        android:scaleType="fitCenter"
-        android:contentDescription="@string/grid_image_description" />
-
-</LinearLayout>
+    android:layout_height="match_parent"
+    android:minHeight="@dimen/grid_image_min_height"
+    android:scaleType="fitCenter"
+    android:layout_margin="@dimen/small"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:contentDescription="@string/grid_image_description"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

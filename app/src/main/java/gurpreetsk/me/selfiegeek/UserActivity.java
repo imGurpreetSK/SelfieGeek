@@ -1,6 +1,8 @@
 package gurpreetsk.me.selfiegeek;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,8 @@ public class UserActivity extends AppCompatActivity {
     private static final String TAG = "UserActivity";
 
     public Client mKinveyClient = null;
+
+    SharedPreferences userID;
 
     MaterialEditText ETusername, ETpassword;
     Button BTNlogin;
@@ -46,6 +50,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onSuccess(User user) {
                 Log.i(TAG, "onSuccess: User logged-in  " + user.getId());
+                userID = getApplicationContext().getSharedPreferences(user.getId(), MODE_PRIVATE);
                 startActivity(new Intent(UserActivity.this, GridActivity.class));
                 finish();
             }
@@ -64,6 +69,8 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onSuccess(User user) {
                 Log.i(TAG, "onSuccess: User created  " + user.getId());
+                //TODO: set readable mode
+                userID = getApplicationContext().getSharedPreferences(user.getId(), MODE_PRIVATE);
                 startActivity(new Intent(UserActivity.this, GridActivity.class));
                 finish();
             }
@@ -71,7 +78,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable throwable) {
                 Toast.makeText(UserActivity.this, "Signup failed\nUsername already exists", Toast.LENGTH_SHORT).show();
-                Log.i(TAG, "onFailure: Sugnup  " + throwable);
+                Log.i(TAG, "onFailure: Signup  " + throwable);
             }
         });
 

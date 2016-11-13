@@ -1,24 +1,32 @@
 package gurpreetsk.me.selfiegeek.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import gurpreetsk.me.selfiegeek.R;
+import gurpreetsk.me.selfiegeek.ui.CustomImageView;
+import id.zelory.compressor.Compressor;
 
 /**
  * Created by Gurpreet on 12/11/16.
  */
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder>{
+public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
 
     private Context context;
+    private ArrayList<File> images;
 
-    public ImageAdapter(Context context) {
+    public ImageAdapter(Context context, ArrayList<File> images) {
         this.context = context;
+        this.images = images;
     }
 
     @Override
@@ -29,21 +37,21 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
-        holder.imageView.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_launcher));
+        holder.imageView.setImageURI(Uri.fromFile(Compressor.getDefault(context).compressToFile(images.get(position))));
     }
 
     @Override
     public int getItemCount() {
-        return 8;
+        return images.size();
     }
 
-    class ImageViewHolder extends RecyclerView.ViewHolder{
+    class ImageViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView imageView;
+        CustomImageView imageView;
 
         ImageViewHolder(View v) {
             super(v);
-            imageView = (ImageView) v.findViewById(R.id.gridImageView);
+            imageView = (CustomImageView) v.findViewById(R.id.gridImageView);
         }
     }
 
