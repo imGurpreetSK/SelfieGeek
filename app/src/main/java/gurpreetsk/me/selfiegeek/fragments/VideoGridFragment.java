@@ -44,7 +44,7 @@ public class VideoGridFragment extends Fragment {
                 startActivity(new Intent(getContext(), RecordVideoActivity.class));
             }
         });
-        adapter = new VideoAdapter(getContext());
+        adapter = new VideoAdapter(getContext(), getActivity(), videoList);
 
         getVideos();
 

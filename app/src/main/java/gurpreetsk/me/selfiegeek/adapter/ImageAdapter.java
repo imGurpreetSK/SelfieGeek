@@ -50,8 +50,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             @Override
             public void onClick(View view) {
                 Intent imageIntent = new Intent(context, ShowImageActivity.class);
-//                imageIntent.putExtra(IMAGE_INTENT_EXTRA, images.get(holder.getAdapterPosition()));
-//                context.startActivity(imageIntent);
 
                 //TODO: Image not showing after transaction
                 imageIntent.putExtra(IMAGE_INTENT_EXTRA, images.get(holder.getAdapterPosition()).toString());
