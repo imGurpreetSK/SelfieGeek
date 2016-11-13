@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import gurpreetsk.me.selfiegeek.KinveyApplication;
+import id.zelory.compressor.Compressor;
 
 import static gurpreetsk.me.selfiegeek.utils.Constants.SERVICE_EXTRA;
 import static gurpreetsk.me.selfiegeek.utils.Constants.SERVICE_FILENAME_EXTRA;
@@ -39,7 +39,7 @@ public class UploadService extends IntentService {
         Uri imagePath = Uri.parse(intent.getStringExtra(SERVICE_EXTRA));
         String fileName = intent.getStringExtra(SERVICE_FILENAME_EXTRA);
 
-        File file = new File(imagePath.getPath());
+        File file = Compressor.getDefault(this).compressToFile(new File(imagePath.getPath()));
         Log.i(TAG, "getFileFromCacheAndUpload: Filename " + imagePath.toString());
 
         try {

@@ -1,6 +1,5 @@
 package gurpreetsk.me.selfiegeek.fragments;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,32 +11,32 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import gurpreetsk.me.selfiegeek.R;
-import gurpreetsk.me.selfiegeek.TakeImageActivity;
-import gurpreetsk.me.selfiegeek.adapter.ImageAdapter;
+import gurpreetsk.me.selfiegeek.RecordVideoActivity;
+import gurpreetsk.me.selfiegeek.adapter.VideoAdapter;
 
-public class GridFragment extends Fragment {
+public class VideoGridFragment extends Fragment {
 
     RecyclerView recyclerView;
-    ImageAdapter adapter;
+    VideoAdapter adapter;
     FloatingActionButton fab;
 
-    public GridFragment() {}
+    public VideoGridFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_grid, container, false);
+        View v = inflater.inflate(R.layout.fragment_video_grid, container, false);
 
-        recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
-        fab = (FloatingActionButton) v.findViewById(R.id.fab_take_image);
+        recyclerView = (RecyclerView) v.findViewById(R.id.videoRecyclerView);
+        fab = (FloatingActionButton) v.findViewById(R.id.fab_record_video);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getContext(), TakeImageActivity.class));
+                startActivity(new Intent(getContext(), RecordVideoActivity.class));
             }
         });
-        adapter = new ImageAdapter(getContext());
+        adapter = new VideoAdapter(getContext());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
