@@ -66,7 +66,7 @@ public class ImageGridFragment extends Fragment {
 
     private void getImages() {
         //TODO: un-hardcode string
-        File dir = new File("/sdcard/Android/data/gurpreetsk.me.selfiegeek/cache/");
+        File dir = new File(getString(R.string.CACHE));
         Log.i(TAG, "getImages: " + dir.getName());
         if (dir.exists()) {
             for (File f : dir.listFiles()) {

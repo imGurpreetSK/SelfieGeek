@@ -3,6 +3,7 @@
     <string name="grid_image_description">User selfie stored in online database</string>
     <string name="enter_username">Enter Username</string>
     <string name="enter_password">Enter Password</string>
+    <string name="CACHE">/sdcard/Android/data/gurpreetsk.me.selfiegeek/cache/</string>
     <string name="login">Login</string>
     <string name="signup">Sign Up</string>
 
