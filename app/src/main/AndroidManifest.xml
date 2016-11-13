@@ -21,6 +21,9 @@
         </activity>
         <activity android:name=".TakeImageActivity" />
         <activity android:name=".RecordVideoActivity" />
+        <activity
+            android:name=".ShowImageActivity"
+            android:noHistory="true"/>
 
         <service android:name=".service.UploadService" />
 
@@ -31,7 +34,7 @@
         <activity
             android:name="com.afollestad.materialcamera.CaptureActivity2"
             android:theme="@style/MaterialCamera.CaptureActivity" />
-        <activity android:name=".ShowImageActivity"></activity>
+
     </application>
 
 </manifest>

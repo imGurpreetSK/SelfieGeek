@@ -28,7 +28,7 @@ import static gurpreetsk.me.selfiegeek.utils.Constants.IMAGE_INTENT_EXTRA;
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
 
     private Context context;
-    Activity activity;
+    private Activity activity;
     private ArrayList<File> images;
 
     public ImageAdapter(Context context, ArrayList<File> images, Activity activity) {
@@ -54,7 +54,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 //                context.startActivity(imageIntent);
 
                 //TODO: Image not showing after transaction
-                imageIntent.putExtra(IMAGE_INTENT_EXTRA, images.get(holder.getAdapterPosition()));
+                imageIntent.putExtra(IMAGE_INTENT_EXTRA, images.get(holder.getAdapterPosition()).toString());
                 ActivityOptionsCompat options = ActivityOptionsCompat.
                         makeSceneTransitionAnimation(activity, holder.imageView , context.getString(R.string.transition_name));
                 context.startActivity(imageIntent, options.toBundle());
