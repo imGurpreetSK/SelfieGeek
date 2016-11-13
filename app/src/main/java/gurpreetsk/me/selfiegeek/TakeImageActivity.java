@@ -40,9 +40,6 @@ public class TakeImageActivity extends AppCompatActivity {
         mKinveyClient = new Client.Builder(getApplicationContext()).build();
 
         int cameraPermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-//        int microphonePermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
-//        if (microphonePermissionCheck != PackageManager.PERMISSION_GRANTED)
-//                askMicrophonePermission(this);
         if (cameraPermissionCheck != PackageManager.PERMISSION_GRANTED )
                 askCameraPermission(this);
         else {
@@ -109,15 +106,6 @@ public class TakeImageActivity extends AppCompatActivity {
                     Toast.makeText(this, "Camera access permission needed to take image", Toast.LENGTH_SHORT).show();
                 }
             }
-//            case MY_PERMISSIONS_REQUEST_RECORD_AUDIO: {
-//                if (grantResults.length > 0
-//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    //permission granted
-//                    camera.start(CAMERA_RQ);
-//                } else {
-//                    Toast.makeText(this, "Microphone access required for video capture", Toast.LENGTH_SHORT).show();
-//                }
-//            }
         }
     }
 

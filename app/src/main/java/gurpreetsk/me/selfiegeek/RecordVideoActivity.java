@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialcamera.MaterialCamera;
@@ -27,9 +28,11 @@ public class RecordVideoActivity extends AppCompatActivity {
             askCameraPermission(this);
             askMicrophonePermission(this);
         }
-        else
+        else {
             new MaterialCamera(this).start(CAMERA_RQ);
-
+            TextView tv = (TextView)findViewById(R.id.textview_image_activity);
+            tv.setText(getResources().getString(R.string.thanks_for_camera_permission));
+        }
     }
 
     @Override
