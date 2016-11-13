@@ -12,4 +12,5 @@
     <string name="provide_camera_permission">Please provide camera/microphone permission for this feature</string>
     <string name="thanks_for_camera_permission">Thanks!</string>
     <string name="default_shared_pref_value">abc</string>
+    <string name="transition_name">shared element transition</string>
 </resources>

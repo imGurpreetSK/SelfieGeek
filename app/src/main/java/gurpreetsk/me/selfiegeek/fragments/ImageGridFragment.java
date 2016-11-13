@@ -46,7 +46,7 @@ public class ImageGridFragment extends Fragment {
                 startActivity(new Intent(getContext(), TakeImageActivity.class));
             }
         });
-        adapter = new ImageAdapter(getContext(), imageList);
+        adapter = new ImageAdapter(getContext(), imageList, getActivity());
 
         getImages();
 

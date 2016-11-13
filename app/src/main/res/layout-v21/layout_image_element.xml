@@ -8,4 +8,5 @@
     android:contentDescription="@string/grid_image_description"
     android:gravity="center"
     android:minHeight="@dimen/grid_image_min_height"
-    android:scaleType="fitCenter" />
+    android:scaleType="fitCenter"
+    android:transitionName="@string/transition_name" />
