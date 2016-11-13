@@ -94,3 +94,5 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+kinvey.properties
+

@@ -10,8 +10,10 @@ import com.kinvey.android.Client;
 
 public class Constants {
 
-//    public static final int MY_PERMISSIONS_REQUEST_ACCESS_CAMERA = 1;
-//    public static final int  MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 2;
-//    public static final int CAMERA_RQ = 1001;
+    public static final int MY_PERMISSIONS_REQUEST_ACCESS_CAMERA = 1;
+    public static final int  MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 2;
+    public static final int CAMERA_RQ = 1001;
+    public static final String SERVICE_EXTRA = "IntentServiceUri";
+    public static final String SERVICE_FILENAME_EXTRA = "IntentServiceFileName";
 
 }

@@ -3,6 +3,7 @@ package gurpreetsk.me.selfiegeek;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -12,14 +13,13 @@ import android.widget.Toast;
 
 import com.afollestad.materialcamera.MaterialCamera;
 import com.kinvey.android.Client;
-import com.kinvey.java.core.MediaHttpUploader;
-import com.kinvey.java.core.UploaderProgressListener;
-import com.kinvey.java.model.FileMetaData;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
+import gurpreetsk.me.selfiegeek.service.UploadService;
+
+import static gurpreetsk.me.selfiegeek.utils.Constants.SERVICE_EXTRA;
+import static gurpreetsk.me.selfiegeek.utils.Constants.SERVICE_FILENAME_EXTRA;
 import static gurpreetsk.me.selfiegeek.utils.permissions.askCameraPermission;
 
 public class TakeImageActivity extends AppCompatActivity {
@@ -52,10 +52,11 @@ public class TakeImageActivity extends AppCompatActivity {
         // Received recording or error from MaterialCamera
         if (requestCode == CAMERA_RQ) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(this, "Saved to: " + data.getDataString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "File upload started", Toast.LENGTH_LONG).show();
                 Log.i(TAG, "onActivityResult: " + data.getDataString());
                 String name = data.getDataString().substring(71, 90);
-                getFileFromCacheAndUpload(name);
+                getFileFromCacheAndUpload(name, data.getData());
+                finish();
             } else if (data != null) {
                 Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
                 e.printStackTrace();
@@ -64,43 +65,16 @@ public class TakeImageActivity extends AppCompatActivity {
         }
     }
 
-    private void getFileFromCacheAndUpload(String fileName) {
+    private void getFileFromCacheAndUpload(final String fileName, Uri imagePath) {
 
-        File file = new File(getCacheDir(), fileName);
-        if (file.exists()) {
-
-            try {
-                FileMetaData metadata = new FileMetaData(fileName + ".jpg");
-                metadata.setPublic(false);  //set the file not to be publicly accessible
-                metadata.setFileName(fileName + ".jpg");
-
-                FileInputStream fin = new FileInputStream(file);
-                UploaderProgressListener upl = new UploaderProgressListener() {
-                    @Override
-                    public void onSuccess(Void result) {
-                        Log.i(TAG, "upload success!");
-                        Toast.makeText(TakeImageActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(Throwable error) {
-                        Log.i(TAG, "upload progress change!");
-                    }
-
-                    @Override
-                    public void progressChanged(MediaHttpUploader uploader) throws IOException {
-                        Log.i(TAG, "progressChanged: " + uploader.getUploadState());
-                    }
-                };
-                mKinveyClient.file().upload(metadata, fin, upl);
-            } catch (Exception e) {
-                Log.e(TAG, "getFileFromCacheAndUpload: " + e);
-                e.printStackTrace();
-            }
-
+        if (imagePath != null) {
+            Intent FileUploadIntent = new Intent(TakeImageActivity.this, UploadService.class);
+            FileUploadIntent.putExtra(SERVICE_EXTRA, imagePath.toString());
+            FileUploadIntent.putExtra(SERVICE_FILENAME_EXTRA, fileName);
+            startService(FileUploadIntent);
         }
-
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -113,7 +87,6 @@ public class TakeImageActivity extends AppCompatActivity {
                     camera.stillShot().start(CAMERA_RQ);
                 } else {
                     Toast.makeText(this, "Camera access permission needed to take image", Toast.LENGTH_SHORT).show();
-                    finish();
                 }
             }
         }
