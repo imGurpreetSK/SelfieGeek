@@ -59,14 +59,17 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             public void onClick(View view) {
                 Intent imageIntent = new Intent(context, ShowImageActivity.class);
 
-                //TODO: Image not showing after transaction
                 imageIntent.putExtra(IMAGE_INTENT_EXTRA, images.get(holder.getAdapterPosition()).toString());
                 ActivityOptionsCompat options = ActivityOptionsCompat.
                         makeSceneTransitionAnimation(activity, holder.imageView, context.getString(R.string.transition_name));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    context.startActivity(imageIntent, options.toBundle());
-                } else
-                    context.startActivity(imageIntent);
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        context.startActivity(imageIntent, options.toBundle());
+                    } else
+                        context.startActivity(imageIntent);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
         holder.imageView.setOnLongClickListener(new View.OnLongClickListener() {

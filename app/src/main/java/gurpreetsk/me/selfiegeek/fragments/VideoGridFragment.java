@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class VideoGridFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_video_grid, container, false);
 
         recyclerView = (RecyclerView) v.findViewById(R.id.videoRecyclerView);
+        TextView empty = (TextView) v.findViewById(R.id.empty_imageRV);
         fab = (FloatingActionButton) v.findViewById(R.id.fab_record_video);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +53,16 @@ public class VideoGridFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
+        if (videoList.isEmpty()) {
+            recyclerView.invalidate();
+            recyclerView.setVisibility(View.GONE);
+            empty.setVisibility(View.VISIBLE);
+        } else{
+            recyclerView.invalidate();
+            recyclerView.setVisibility(View.VISIBLE);
+            empty.setVisibility(View.GONE);
+        }
 
         return v;
     }

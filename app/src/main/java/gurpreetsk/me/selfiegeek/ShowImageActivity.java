@@ -1,11 +1,8 @@
 package gurpreetsk.me.selfiegeek;
 
-import android.app.Activity;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -22,9 +19,12 @@ public class ShowImageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_image);
 
         Uri fileUri = Uri.parse(getIntent().getStringExtra(IMAGE_INTENT_EXTRA));
+        File file = new File(fileUri.getPath());
 
-        ImageView imageView = (ImageView) findViewById(R.id.imageview_large);
-        imageView.setImageURI(Uri.fromFile(Compressor.getDefault(this).compressToFile(new File(fileUri.getPath()))));
+        if (file.exists()) {
+            ImageView imageView = (ImageView) findViewById(R.id.imageview_large);
+            imageView.setImageURI(Uri.fromFile(Compressor.getDefault(this).compressToFile(file)));
+        }
 
     }
 

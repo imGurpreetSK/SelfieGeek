@@ -25,4 +25,13 @@
         app:layout_anchorGravity="bottom|end"
         app:rippleColor="@android:color/white" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/empty_imageRV"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="@dimen/textsize_big"
+        android:text="@string/no_images"/>
+
 </FrameLayout>
