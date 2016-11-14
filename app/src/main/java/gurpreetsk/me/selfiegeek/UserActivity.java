@@ -65,7 +65,11 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public void signupUser(View v) {
-        mKinveyClient.user().create(ETusername.getText().toString(), ETpassword.getText().toString(), new KinveyUserCallback() {
+        String username = ETusername.getText().toString();
+        String password = ETpassword.getText().toString();
+        if (username.equals("") || password.equals(""))
+            Toast.makeText(this, "Please input credentials to sign-up", Toast.LENGTH_SHORT).show();
+        mKinveyClient.user().create(username, password, new KinveyUserCallback() {
             @Override
             public void onSuccess(User user) {
                 Log.i(TAG, "onSuccess: User created  " + user.getId());

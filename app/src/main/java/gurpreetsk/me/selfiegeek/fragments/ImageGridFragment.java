@@ -65,7 +65,7 @@ public class ImageGridFragment extends Fragment {
     }
 
     private void getImages() {
-        //TODO: un-hardcode string
+
         File dir = new File(getString(R.string.CACHE));
         Log.i(TAG, "getImages: " + dir.getName());
         if (dir.exists()) {

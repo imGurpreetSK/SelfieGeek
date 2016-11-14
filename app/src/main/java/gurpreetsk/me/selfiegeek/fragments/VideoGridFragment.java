@@ -63,7 +63,6 @@ public class VideoGridFragment extends Fragment {
     }
 
     private void getVideos() {
-        //TODO: un-hardcode string
         File dir = new File(getString(R.string.CACHE));
         Log.i(TAG, "getVideos: " + dir.getName());
         if (dir.exists()) {
