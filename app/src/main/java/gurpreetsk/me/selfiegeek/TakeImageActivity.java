@@ -16,11 +16,13 @@ import com.afollestad.materialcamera.MaterialCamera;
 import com.kinvey.android.Client;
 
 import gurpreetsk.me.selfiegeek.service.UploadService;
+import gurpreetsk.me.selfiegeek.utils.Utility;
 
 import static gurpreetsk.me.selfiegeek.utils.Constants.CAMERA_STILL;
 import static gurpreetsk.me.selfiegeek.utils.Constants.MY_PERMISSIONS_REQUEST_ACCESS_CAMERA;
 import static gurpreetsk.me.selfiegeek.utils.Constants.SERVICE_EXTRA;
 import static gurpreetsk.me.selfiegeek.utils.Constants.SERVICE_FILENAME_EXTRA;
+import static gurpreetsk.me.selfiegeek.utils.Utility.getFileFromCacheAndUpload;
 import static gurpreetsk.me.selfiegeek.utils.permissions.askCameraPermission;
 
 public class TakeImageActivity extends AppCompatActivity {
@@ -58,7 +60,7 @@ public class TakeImageActivity extends AppCompatActivity {
                 Toast.makeText(this, "Image upload started", Toast.LENGTH_LONG).show();
                 Log.i(TAG, "onActivityResult: " + data.getDataString());
                 String name = data.getDataString().substring(71, 90);
-                getFileFromCacheAndUpload(name, data.getData());
+                getFileFromCacheAndUpload(name, data.getData(), getApplicationContext());
                 finish();
             } else if (data != null) {
                 Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
@@ -68,17 +70,6 @@ public class TakeImageActivity extends AppCompatActivity {
         }
 
     }
-
-    private void getFileFromCacheAndUpload(final String fileName, Uri imagePath) {
-
-        if (imagePath != null) {
-            Intent FileUploadIntent = new Intent(TakeImageActivity.this, UploadService.class);
-            FileUploadIntent.putExtra(SERVICE_EXTRA, imagePath.toString());
-            FileUploadIntent.putExtra(SERVICE_FILENAME_EXTRA, fileName);
-            startService(FileUploadIntent);
-        }
-    }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

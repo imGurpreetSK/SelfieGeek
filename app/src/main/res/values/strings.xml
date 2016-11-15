@@ -21,4 +21,6 @@
     <string name="no_videos">No videos available\nTry fetching old images or make some new ones :D</string>
     <string name="action_settings">Settings</string>
     <string name="refresh">Refresh</string>
+    <string name="delete_from_device">Trash</string>
+    <string name="delete_everywhere">Delete</string>
 </resources>

@@ -36,16 +36,29 @@ public class UploadService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        Uri imagePath = Uri.parse(intent.getStringExtra(SERVICE_EXTRA));
+        Uri path = Uri.parse(intent.getStringExtra(SERVICE_EXTRA));
         String fileName = intent.getStringExtra(SERVICE_FILENAME_EXTRA);
 
-        File file = Compressor.getDefault(this).compressToFile(new File(imagePath.getPath()));
-        Log.i(TAG, "getFileFromCacheAndUpload: Filename " + imagePath.toString());
+        File file;
+        FileMetaData metadata = null;
+        
+        if (fileName.contains("IMG"))
+            file = Compressor.getDefault(this).compressToFile(new File(path.getPath()));
+        else
+            file = new File(path.getPath());    //TODO: IMPLEMENT VIDEO COMPRESSION
+        Log.i(TAG, "getFileFromCacheAndUpload: Filename " + path.toString());
 
         try {
-            FileMetaData metadata = new FileMetaData(fileName + ".jpg");
+            if (fileName.contains("IMG")) {
+                metadata = new FileMetaData(fileName + ".jpg");
+                metadata.setFileName(fileName + ".jpg");
+            }
+            else if (fileName.contains("VID")){
+                metadata = new FileMetaData(fileName + ".mp4");
+                metadata.setFileName(fileName + ".mp4");
+            }
             metadata.setPublic(false);  //set the file not to be publicly accessible
-            metadata.setFileName(fileName + ".jpg");
+
             Log.i(TAG, "getFileFromCacheAndUpload: Metadata created");
 
             FileInputStream fin = new FileInputStream(file);

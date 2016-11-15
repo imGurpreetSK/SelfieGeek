@@ -72,7 +72,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
                 builder.setCancelable(true);
                 builder.setTitle(context.getString(R.string.dialog_delete_title));
                 builder.setMessage(context.getString(R.string.dialog_delete_desc));
-                builder.setPositiveButton(context.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(context.getString(R.string.delete_everywhere), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
 
@@ -87,7 +87,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
                                 File dir = new File(context.getString(R.string.CACHE));
                                 if (dir.exists()) {
                                     for (File f : dir.listFiles()) {
+                                        Log.i(TAG, "onSuccess: Video "+fileName);
                                         if(f.getName().contentEquals(fileName)) {
+                                            Log.i(TAG, "onSuccess: Video "+fileName);
                                             f.delete();
                                         }
                                     }
@@ -98,14 +100,26 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
                             @Override
                             public void onFailure(Throwable throwable) {
                                 Toast.makeText(context, "Oops! Something went wrong\nPlease try again", Toast.LENGTH_SHORT).show();
+                                throwable.printStackTrace();
                             }
                         });
                     }
                 })
-                        .setNegativeButton(context.getString(R.string.no), new DialogInterface.OnClickListener() {
+                        .setNegativeButton(context.getString(R.string.delete_from_device), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                                final String fileName = videos.get(holder.getAdapterPosition()).getName();
+                                File dir = new File(context.getString(R.string.CACHE));
+                                if (dir.exists()) {
+                                    for (File f : dir.listFiles()) {
+                                        Log.i(TAG, "onSuccess: Video "+fileName);
+                                        if(f.getName().equals(fileName)) {
+                                            Log.i(TAG, "onSuccess: Video "+fileName);
+                                            f.delete();
+                                        }
+                                    }
+                                }
+                                Toast.makeText(context, "File deleted from device!", Toast.LENGTH_SHORT).show();
                             }
                         });
                 builder.create().show();
@@ -130,12 +144,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
     class VideoHolder extends RecyclerView.ViewHolder{
 
         ImageView videoThumbnail;
-//        FrameLayout videoElement;
 
         VideoHolder(View v) {
             super(v);
             videoThumbnail = (ImageView) v.findViewById(R.id.gridVideoView);
-//            videoElement = (FrameLayout) v.findViewById(R.id.grid_element);
         }
     }
 }

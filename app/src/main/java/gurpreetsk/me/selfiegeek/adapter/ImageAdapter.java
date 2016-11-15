@@ -9,6 +9,7 @@ import android.os.Build;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +81,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 builder.setCancelable(true);
                 builder.setTitle(context.getString(R.string.dialog_delete_title));
                 builder.setMessage(context.getString(R.string.dialog_delete_desc));
-                builder.setPositiveButton(context.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(context.getString(R.string.delete_everywhere), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
 
@@ -110,9 +111,19 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                         });
                     }
                 })
-                        .setNegativeButton(context.getString(R.string.no), new DialogInterface.OnClickListener() {
+                        .setNegativeButton(context.getString(R.string.delete_from_device), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                final String fileName = images.get(holder.getAdapterPosition()).getName();
+                                File dir = new File(context.getString(R.string.CACHE));
+                                if (dir.exists()) {
+                                    for (File f : dir.listFiles()) {
+                                        if(f.getName().equals(fileName)) {
+                                            f.delete();
+                                        }
+                                    }
+                                }
+                                Toast.makeText(context, "File deleted from device!", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             }
                         });
