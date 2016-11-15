@@ -115,7 +115,7 @@ public class ImageGridFragment extends Fragment {
 
         switch (item.getItemId()){
             case R.id.action_refresh:
-
+                //TODO: refresh layout, download stuff and store in cache
                 break;
             case R.id.settings:
                 Toast toast = Toast.makeText(getContext(), "Created By Gurpreet Singh\nfor SocialCops task", Toast.LENGTH_SHORT);
