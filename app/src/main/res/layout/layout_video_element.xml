@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_margin="@dimen/grid_video_margin"
+    android:id="@+id/grid_element"
     android:layout_height="wrap_content" >
 
-    <VideoView
+    <ImageView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:minHeight="@dimen/grid_image_min_height"
         android:id="@+id/gridVideoView" />
 
@@ -13,7 +17,14 @@
         android:layout_width="@dimen/large"
         android:layout_height="@dimen/medium"
         android:layout_gravity="bottom|end"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/ic_videocam_white_48dp"
         android:scaleType="fitCenter"
-        android:layout_margin="@dimen/small" />
+        android:layout_margin="@dimen/small_video" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_play_circle_filled_white_48dp"/>
+
 </FrameLayout>

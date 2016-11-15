@@ -23,7 +23,12 @@
         <activity android:name=".RecordVideoActivity" />
         <activity
             android:name=".ShowImageActivity"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            android:theme="@style/AppTheme.NoActionBar.BlackStatusBar" />
+        <activity
+            android:name=".PlayVideoActivity"
+            android:noHistory="true"
+            android:theme="@style/AppTheme.NoActionBar.BlackStatusBar" />
 
         <service android:name=".service.UploadService" />
 

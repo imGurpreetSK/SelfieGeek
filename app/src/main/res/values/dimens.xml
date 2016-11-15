@@ -4,9 +4,11 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_elevation">6dp</dimen>
     <dimen name="grid_image_margin">4dp</dimen>
+    <dimen name="grid_video_margin">4dp</dimen>
     <dimen name="grid_image_min_height">160dp</dimen>
     <dimen name="textsize_big">16sp</dimen>
     <dimen name="small">8dp</dimen>
-    <dimen name="medium">16dp</dimen>
-    <dimen name="large">32dp</dimen>
+    <dimen name="small_video">4dp</dimen>
+    <dimen name="medium">24dp</dimen>
+    <dimen name="large">40dp</dimen>
 </resources>

@@ -3,14 +3,17 @@ package gurpreetsk.me.selfiegeek.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
+import com.bumptech.glide.Glide;
 import com.kinvey.android.Client;
 import com.kinvey.android.callback.KinveyDeleteCallback;
 import com.kinvey.java.model.FileMetaData;
@@ -19,7 +22,10 @@ import com.kinvey.java.model.KinveyDeleteResponse;
 import java.io.File;
 import java.util.ArrayList;
 
+import gurpreetsk.me.selfiegeek.PlayVideoActivity;
 import gurpreetsk.me.selfiegeek.R;
+
+import static gurpreetsk.me.selfiegeek.utils.Constants.VIDEO_INTENT_EXTRA;
 
 /**
  * Created by Gurpreet on 13/11/16.
@@ -31,6 +37,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
     private Activity activity;
     private ArrayList<File> videos;
 
+    private static final String TAG = "VideoAdapter";
+
     public VideoAdapter(Context context, Activity activity, ArrayList<File> videos) {
         this.context = context;
         this.activity = activity;
@@ -40,15 +48,23 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
     @Override
     public void onBindViewHolder(final VideoHolder holder, int position) {
 
-        holder.videoView.setOnClickListener(new View.OnClickListener() {
+        Glide.with(context)
+                .load(videos.get(holder.getAdapterPosition())) // or URI/path
+                .into(holder.videoThumbnail); //imageview to set thumbnail to
+
+        holder.videoThumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                Log.i(TAG, "onClick: Video element clicked" );
 
+                Intent intent = new Intent(context, PlayVideoActivity.class);
+                intent.putExtra(VIDEO_INTENT_EXTRA ,videos.get(holder.getAdapterPosition()).toString());
+                context.startActivity(intent);
 
             }
         });
-        holder.videoView.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.videoThumbnail.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(final View view) {
 
@@ -113,11 +129,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
 
     class VideoHolder extends RecyclerView.ViewHolder{
 
-        VideoView videoView;
+        ImageView videoThumbnail;
+//        FrameLayout videoElement;
 
         VideoHolder(View v) {
             super(v);
-            videoView = (VideoView) v.findViewById(R.id.gridVideoView);
+            videoThumbnail = (ImageView) v.findViewById(R.id.gridVideoView);
+//            videoElement = (FrameLayout) v.findViewById(R.id.grid_element);
         }
     }
 }

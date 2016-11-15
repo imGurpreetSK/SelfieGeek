@@ -17,6 +17,6 @@ public class Constants {
     public static final String SERVICE_EXTRA = "IntentServiceUri";
     public static final String SERVICE_FILENAME_EXTRA = "IntentServiceFileName";
     public static final String IMAGE_INTENT_EXTRA = "Image intent extra";
-
+    public static final String VIDEO_INTENT_EXTRA = "Video intent extra";
 
 }
