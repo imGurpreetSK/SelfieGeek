@@ -16,7 +16,6 @@ import static gurpreetsk.me.selfiegeek.utils.KeyConstants.SERVICE_FILENAME_EXTRA
 public class Utility {
 
     public static void getFileFromCacheAndUpload(final String fileName, Uri path, Context context) {
-
         if (path != null) {
             Intent FileUploadIntent = new Intent(context, UploadService.class);
             FileUploadIntent.putExtra(SERVICE_EXTRA, path.toString());

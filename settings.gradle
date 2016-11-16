@@ -1,1 +1,1 @@
-include ':app', ':customisedcameralibrary'
+include ':app'

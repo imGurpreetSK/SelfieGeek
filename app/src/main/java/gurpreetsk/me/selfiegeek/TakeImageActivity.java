@@ -48,7 +48,6 @@ public class TakeImageActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        // Received recording or error from MaterialCamera
         if (requestCode == CAMERA_STILL) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(this, "Image upload started", Toast.LENGTH_LONG).show();
