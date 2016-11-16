@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -58,9 +60,19 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
 
                     Log.i(TAG, "onClick: Video element clicked");
 
-                    Intent intent = new Intent(context, PlayVideoActivity.class);
-                    intent.putExtra(VIDEO_INTENT_EXTRA, videos.get(holder.getAdapterPosition()).toString());
-                    context.startActivity(intent);
+                    Intent videoIntent = new Intent(context, PlayVideoActivity.class);
+                    videoIntent.putExtra(VIDEO_INTENT_EXTRA, videos.get(holder.getAdapterPosition()).toString());
+
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(activity, holder.videoThumbnail, context.getString(R.string.transition_name));
+                    try {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            context.startActivity(videoIntent, options.toBundle());
+                        } else
+                            context.startActivity(videoIntent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                 }
             });

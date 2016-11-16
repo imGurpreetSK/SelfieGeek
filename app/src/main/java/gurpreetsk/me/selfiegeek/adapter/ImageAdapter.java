@@ -60,9 +60,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 holder.imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent imageIntent = new Intent(context, ShowImageActivity.class);
 
+                        Intent imageIntent = new Intent(context, ShowImageActivity.class);
                         imageIntent.putExtra(IMAGE_INTENT_EXTRA, images.get(holder.getAdapterPosition()).toString());
+
                         ActivityOptionsCompat options = ActivityOptionsCompat.
                                 makeSceneTransitionAnimation(activity, holder.imageView, context.getString(R.string.transition_name));
                         try {
