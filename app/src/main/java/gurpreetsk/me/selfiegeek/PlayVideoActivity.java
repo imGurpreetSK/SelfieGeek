@@ -18,51 +18,58 @@ public class PlayVideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play_video);
 
         String videoUrl = getIntent().getStringExtra(VIDEO_INTENT_EXTRA);
+        if (videoUrl != null) {
+            EasyVideoPlayer videoPlayer = (EasyVideoPlayer) findViewById(R.id.videoPlayer);
+            videoPlayer.setAutoPlay(true);
+            videoPlayer.setSource(Uri.parse(videoUrl));
 
-        EasyVideoPlayer videoPlayer = (EasyVideoPlayer) findViewById(R.id.videoPlayer);
-        videoPlayer.setAutoPlay(true);
-        videoPlayer.setSource(Uri.parse(videoUrl));
+            videoPlayer.setCallback(new EasyVideoCallback() {
+                @Override
+                public void onStarted(EasyVideoPlayer player) {
+                }
 
-        videoPlayer.setCallback(new EasyVideoCallback() {
-            @Override
-            public void onStarted(EasyVideoPlayer player) {
-            }
+                @Override
+                public void onPaused(EasyVideoPlayer player) {
+                    player.pause();
+                }
 
-            @Override
-            public void onPaused(EasyVideoPlayer player) {
-                player.pause();
-            }
+                @Override
+                public void onPreparing(EasyVideoPlayer player) {
+                }
 
-            @Override
-            public void onPreparing(EasyVideoPlayer player) {
-            }
+                @Override
+                public void onPrepared(EasyVideoPlayer player) {
+                }
 
-            @Override
-            public void onPrepared(EasyVideoPlayer player) {
-            }
+                @Override
+                public void onBuffering(int percent) {
+                }
 
-            @Override
-            public void onBuffering(int percent) {
-            }
+                @Override
+                public void onError(EasyVideoPlayer player, Exception e) {
+                    Toast.makeText(PlayVideoActivity.this, "An error occurred\nPlease try again", Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onError(EasyVideoPlayer player, Exception e) {
-                Toast.makeText(PlayVideoActivity.this, "An error occurred\nPlease try again", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCompletion(EasyVideoPlayer player) {
+                @Override
+                public void onCompletion(EasyVideoPlayer player) {
 //                player.reset();
-            }
+                }
 
-            @Override
-            public void onRetry(EasyVideoPlayer player, Uri source) {
-            }
+                @Override
+                public void onRetry(EasyVideoPlayer player, Uri source) {
+                }
 
-            @Override
-            public void onSubmit(EasyVideoPlayer player, Uri source) {
-            }
-        });
-
+                @Override
+                public void onSubmit(EasyVideoPlayer player, Uri source) {
+                }
+            });
+        }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        supportFinishAfterTransition();
+    }
+
 }

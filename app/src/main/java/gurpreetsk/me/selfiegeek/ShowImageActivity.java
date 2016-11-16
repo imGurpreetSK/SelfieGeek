@@ -25,7 +25,6 @@ public class ShowImageActivity extends AppCompatActivity {
             ImageView imageView = (ImageView) findViewById(R.id.imageview_large);
             imageView.setImageURI(Uri.fromFile(Compressor.getDefault(this).compressToFile(file)));
         }
-
     }
 
     @Override

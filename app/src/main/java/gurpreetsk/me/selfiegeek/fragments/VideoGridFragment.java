@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,7 @@ import gurpreetsk.me.selfiegeek.adapter.VideoAdapter;
 import gurpreetsk.me.selfiegeek.service.DownloadService;
 
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.IMAGE_BROADCAST;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.PACKAGE;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.VIDEO_BROADCAST;
 
 public class VideoGridFragment extends Fragment {
@@ -42,7 +44,6 @@ public class VideoGridFragment extends Fragment {
     FloatingActionButton fab;
     TextView empty;
     SwipeRefreshLayout swipeRefreshLayout;
-    VideoUpdateReceiver videoUpdateReceiver;
 
     ArrayList<File> videoList = new ArrayList<>();
 
@@ -53,15 +54,6 @@ public class VideoGridFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        videoUpdateReceiver = new VideoUpdateReceiver();
-        IntentFilter filter = new IntentFilter(VIDEO_BROADCAST);
-        getContext().registerReceiver(videoUpdateReceiver, filter);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        getContext().unregisterReceiver(videoUpdateReceiver);
     }
 
     @Override
@@ -126,7 +118,7 @@ public class VideoGridFragment extends Fragment {
     }
 
     private void getVideos() {
-        File dir = new File(getString(R.string.CACHE));
+        File dir = new File(Environment.getExternalStorageDirectory().getPath()+"/"+PACKAGE);
         Log.i(TAG, "getVideos: " + dir.getName());
         if (dir.exists()) {
             for (File f : dir.listFiles()) {
@@ -162,16 +154,6 @@ public class VideoGridFragment extends Fragment {
                 break;
         }
         return true;
-    }
-
-
-    private class VideoUpdateReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.i(TAG, "onReceive: Inside broadcast receiver");
-            //TODO: THE FIRST VIDEO SHOT NOT SHOWING IN FRAGMENT UNLESS ACTIVITY DESTROYED
-            adapter.notifyDataSetChanged();
-        }
     }
 
 }

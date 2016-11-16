@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,9 +20,12 @@ import gurpreetsk.me.selfiegeek.fragments.ImageGridFragment;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.CAMERA_STILL;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.IMAGE_BROADCAST;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.MY_PERMISSIONS_REQUEST_ACCESS_CAMERA;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.MY_PERMISSIONS_REQUEST_ACCESS_STORAGE;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.PACKAGE;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.VIDEO_BROADCAST;
 import static gurpreetsk.me.selfiegeek.utils.Utility.getFileFromCacheAndUpload;
 import static gurpreetsk.me.selfiegeek.utils.permissions.askCameraPermission;
+import static gurpreetsk.me.selfiegeek.utils.permissions.askStoragePermission;
 
 public class TakeImageActivity extends AppCompatActivity {
 
@@ -39,12 +43,19 @@ public class TakeImageActivity extends AppCompatActivity {
         mKinveyClient = new Client.Builder(getApplicationContext()).build();
 
         int cameraPermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        if (cameraPermissionCheck != PackageManager.PERMISSION_GRANTED)
-            askCameraPermission(this);
-        else {
-            camera.stillShot().start(CAMERA_STILL);
-            TextView tv = (TextView) findViewById(R.id.textview_image_activity);
-            tv.setText(getResources().getString(R.string.thanks_for_camera_permission));
+        int storagePermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (storagePermissionCheck != PackageManager.PERMISSION_GRANTED) {
+            askStoragePermission(this);
+        } else {
+            if (cameraPermissionCheck != PackageManager.PERMISSION_GRANTED)
+                askCameraPermission(this);
+            else {
+                camera.stillShot()
+                        .saveDir(Environment.getExternalStorageDirectory().getPath()+"/"+PACKAGE)
+                        .start(CAMERA_STILL);
+                TextView tv = (TextView) findViewById(R.id.textview_image_activity);
+                tv.setText(getResources().getString(R.string.thanks_for_camera_permission));
+            }
         }
     }
 
@@ -55,12 +66,8 @@ public class TakeImageActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(this, "Image upload started", Toast.LENGTH_LONG).show();
                 Log.i(TAG, "onActivityResult: " + data.getDataString());
-                String name = data.getDataString().substring(71, 90);
+                String name = data.getDataString().substring(10);
                 getFileFromCacheAndUpload(name, data.getData(), getApplicationContext());
-                Intent intent = new Intent();
-                intent.setAction(IMAGE_BROADCAST);
-                sendBroadcast(intent);
-                Log.i(TAG, "onActivityResult: Sent Broadcast");
                 finish();
             } else if (data != null) {
                 Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
@@ -81,6 +88,13 @@ public class TakeImageActivity extends AppCompatActivity {
                     camera.stillShot().start(CAMERA_STILL);
                 } else {
                     Toast.makeText(this, "Camera access permission needed to take image", Toast.LENGTH_SHORT).show();
+                }
+            }
+            case MY_PERMISSIONS_REQUEST_ACCESS_STORAGE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    Toast.makeText(this, getString(R.string.storage_permission_needed), Toast.LENGTH_SHORT).show();
                 }
             }
         }

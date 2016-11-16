@@ -1,11 +1,9 @@
 package gurpreetsk.me.selfiegeek.fragments;
 
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -31,7 +29,7 @@ import gurpreetsk.me.selfiegeek.TakeImageActivity;
 import gurpreetsk.me.selfiegeek.adapter.ImageAdapter;
 import gurpreetsk.me.selfiegeek.service.DownloadService;
 
-import static gurpreetsk.me.selfiegeek.utils.KeyConstants.IMAGE_BROADCAST;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.PACKAGE;
 
 public class ImageGridFragment extends Fragment {
 
@@ -42,7 +40,6 @@ public class ImageGridFragment extends Fragment {
     FloatingActionButton fab;
     TextView empty;
     SwipeRefreshLayout swipeRefreshLayout;
-    ImageUpdateReceiver imageUpdateReceiver;
 
     ArrayList<File> imageList = new ArrayList<>();
 
@@ -53,15 +50,6 @@ public class ImageGridFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        imageUpdateReceiver = new ImageUpdateReceiver();
-        IntentFilter filter = new IntentFilter(IMAGE_BROADCAST);
-        getContext().registerReceiver(imageUpdateReceiver, filter);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        getContext().unregisterReceiver(imageUpdateReceiver);
     }
 
     @Override
@@ -129,7 +117,7 @@ public class ImageGridFragment extends Fragment {
     }
 
     private void getImages() {
-        File dir = new File(getString(R.string.CACHE));
+        File dir = new File(Environment.getExternalStorageDirectory().getPath()+"/"+PACKAGE);
         Log.i(TAG, "getImages: " + dir.getName());
         if (dir.exists()) {
             for (File f : dir.listFiles()) {
@@ -162,16 +150,6 @@ public class ImageGridFragment extends Fragment {
                 break;
         }
         return true;
-    }
-
-
-    private class ImageUpdateReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.i(TAG, "onReceive: Inside broadcast receiver");
-            //TODO: THE FIRST IMAGE CLICKED NOT SHOWING IN FRAGMENT UNLESS ACTIVITY DESTROYED
-            adapter.notifyDataSetChanged();
-        }
     }
 
 }
