@@ -1,6 +1,9 @@
 package gurpreetsk.me.selfiegeek.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +28,10 @@ import java.util.ArrayList;
 import gurpreetsk.me.selfiegeek.R;
 import gurpreetsk.me.selfiegeek.RecordVideoActivity;
 import gurpreetsk.me.selfiegeek.adapter.VideoAdapter;
+import gurpreetsk.me.selfiegeek.service.DownloadService;
+
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.IMAGE_BROADCAST;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.VIDEO_BROADCAST;
 
 public class VideoGridFragment extends Fragment {
 
@@ -34,15 +41,26 @@ public class VideoGridFragment extends Fragment {
     VideoAdapter adapter;
     FloatingActionButton fab;
     SwipeRefreshLayout swipeRefreshLayout;
+    VideoUpdateReceiver videoUpdateReceiver;
 
     ArrayList<File> videoList = new ArrayList<>();
 
-    public VideoGridFragment() {}
+    public VideoGridFragment() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        videoUpdateReceiver = new VideoUpdateReceiver();
+        IntentFilter filter = new IntentFilter(VIDEO_BROADCAST);
+        getContext().registerReceiver(videoUpdateReceiver, filter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getContext().unregisterReceiver(videoUpdateReceiver);
     }
 
     @Override
@@ -61,7 +79,7 @@ public class VideoGridFragment extends Fragment {
                 startActivity(new Intent(getContext(), RecordVideoActivity.class));
             }
         });
-        adapter = new VideoAdapter(getContext(), getActivity(), videoList);
+        adapter = new VideoAdapter(getContext(), getActivity(), videoList, recyclerView);
 
         getVideos();
 
@@ -85,7 +103,7 @@ public class VideoGridFragment extends Fragment {
         if (videoList.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             empty.setVisibility(View.VISIBLE);
-        } else{
+        } else {
             recyclerView.setVisibility(View.VISIBLE);
             empty.setVisibility(View.GONE);
         }
@@ -121,9 +139,11 @@ public class VideoGridFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_refresh:
-                //TODO: refresh layout, download stuff and store in cache
+                //TODO: make download stuff and store in cache work properly
+                Intent downloadIntent = new Intent(getContext(), DownloadService.class);
+                getContext().startService(downloadIntent);
                 break;
             case R.id.settings:
 //                TextView tv = new TextView(getContext());
@@ -135,6 +155,16 @@ public class VideoGridFragment extends Fragment {
                 break;
         }
         return true;
+    }
+
+
+    private class VideoUpdateReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i(TAG, "onReceive: Inside broadcast receiver");
+            //TODO: THE FIRST VIDEO SHOT NOT SHOWING IN FRAGMENT UNLESS ACTIVITY DESTROYED
+            adapter.notifyDataSetChanged();
+        }
     }
 
 }

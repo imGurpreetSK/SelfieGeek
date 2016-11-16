@@ -18,6 +18,8 @@ public class KeyConstants {
     public static final String SERVICE_FILENAME_EXTRA = "IntentServiceFileName";
     public static final String IMAGE_INTENT_EXTRA = "Image intent extra";
     public static final String VIDEO_INTENT_EXTRA = "Video intent extra";
+    public static final String IMAGE_BROADCAST = "Image Uploaded";
+    public static final String VIDEO_BROADCAST = "Video Uploaded";
 
     public static final String SHARED_PREF_KEY = "SPKey";
 

@@ -14,8 +14,12 @@ import android.widget.Toast;
 import com.afollestad.materialcamera.MaterialCamera;
 import com.kinvey.android.Client;
 
+import gurpreetsk.me.selfiegeek.fragments.ImageGridFragment;
+
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.CAMERA_STILL;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.IMAGE_BROADCAST;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.MY_PERMISSIONS_REQUEST_ACCESS_CAMERA;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.VIDEO_BROADCAST;
 import static gurpreetsk.me.selfiegeek.utils.Utility.getFileFromCacheAndUpload;
 import static gurpreetsk.me.selfiegeek.utils.permissions.askCameraPermission;
 
@@ -35,14 +39,13 @@ public class TakeImageActivity extends AppCompatActivity {
         mKinveyClient = new Client.Builder(getApplicationContext()).build();
 
         int cameraPermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        if (cameraPermissionCheck != PackageManager.PERMISSION_GRANTED )
-                askCameraPermission(this);
+        if (cameraPermissionCheck != PackageManager.PERMISSION_GRANTED)
+            askCameraPermission(this);
         else {
             camera.stillShot().start(CAMERA_STILL);
-            TextView tv = (TextView)findViewById(R.id.textview_image_activity);
+            TextView tv = (TextView) findViewById(R.id.textview_image_activity);
             tv.setText(getResources().getString(R.string.thanks_for_camera_permission));
         }
-
     }
 
     @Override
@@ -54,6 +57,10 @@ public class TakeImageActivity extends AppCompatActivity {
                 Log.i(TAG, "onActivityResult: " + data.getDataString());
                 String name = data.getDataString().substring(71, 90);
                 getFileFromCacheAndUpload(name, data.getData(), getApplicationContext());
+                Intent intent = new Intent();
+                intent.setAction(IMAGE_BROADCAST);
+                sendBroadcast(intent);
+                Log.i(TAG, "onActivityResult: Sent Broadcast");
                 finish();
             } else if (data != null) {
                 Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);

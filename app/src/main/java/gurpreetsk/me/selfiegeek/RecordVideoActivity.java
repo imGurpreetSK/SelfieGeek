@@ -14,7 +14,9 @@ import android.widget.Toast;
 import com.afollestad.materialcamera.MaterialCamera;
 
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.CAMERA_RQ;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.IMAGE_BROADCAST;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.MY_PERMISSIONS_REQUEST_ACCESS_CAMERA;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.VIDEO_BROADCAST;
 import static gurpreetsk.me.selfiegeek.utils.Utility.getFileFromCacheAndUpload;
 import static gurpreetsk.me.selfiegeek.utils.permissions.askCameraPermission;
 import static gurpreetsk.me.selfiegeek.utils.permissions.askMicrophonePermission;
@@ -31,10 +33,14 @@ public class RecordVideoActivity extends AppCompatActivity {
         if (cameraPermissionCheck != PackageManager.PERMISSION_GRANTED) {
             askCameraPermission(this);
             askMicrophonePermission(this);
-        }
-        else {
-            new MaterialCamera(this).start(CAMERA_RQ);
-            TextView tv = (TextView)findViewById(R.id.textview_image_activity);
+        } else {
+            new MaterialCamera(this)
+                    .maxAllowedFileSize(1024 * 1024 * 20)    //20MB
+                    .showPortraitWarning(false)
+                    .videoPreferredAspect(4f/3f)
+                    .videoPreferredHeight(720)
+                    .start(CAMERA_RQ);
+            TextView tv = (TextView) findViewById(R.id.textview_image_activity);
             tv.setText(getResources().getString(R.string.thanks_for_camera_permission));
         }
     }
@@ -51,6 +57,9 @@ public class RecordVideoActivity extends AppCompatActivity {
                 Log.i(TAG, "onActivityResult: " + data.getDataString());
                 String name = data.getDataString().substring(71, 90);
                 getFileFromCacheAndUpload(name, data.getData(), getApplicationContext());
+                Intent intent = new Intent();
+                intent.setAction(VIDEO_BROADCAST);
+                sendBroadcast(intent);
                 finish();
             } else if (data != null) {
                 Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);

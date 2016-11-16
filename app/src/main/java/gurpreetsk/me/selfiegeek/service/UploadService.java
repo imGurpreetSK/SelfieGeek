@@ -18,6 +18,7 @@ import java.io.IOException;
 
 import id.zelory.compressor.Compressor;
 
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.IMAGE_BROADCAST;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.SERVICE_EXTRA;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.SERVICE_FILENAME_EXTRA;
 
@@ -34,7 +35,7 @@ public class UploadService extends IntentService {
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleIntent(final Intent intent) {
 
         Uri path = Uri.parse(intent.getStringExtra(SERVICE_EXTRA));
         String fileName = intent.getStringExtra(SERVICE_FILENAME_EXTRA);
@@ -67,6 +68,8 @@ public class UploadService extends IntentService {
                 @Override
                 public void onSuccess(Void result) {
                     Log.i(TAG, "upload success!");
+//                    Intent broadcastIntent = new Intent(IMAGE_BROADCAST);
+//                    sendBroadcast(broadcastIntent);
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {

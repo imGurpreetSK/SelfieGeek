@@ -38,13 +38,15 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
     private Context context;
     private Activity activity;
     private ArrayList<File> videos;
+    private RecyclerView recyclerView;
 
     private static final String TAG = "VideoAdapter";
 
-    public VideoAdapter(Context context, Activity activity, ArrayList<File> videos) {
+    public VideoAdapter(Context context, Activity activity, ArrayList<File> videos, RecyclerView recyclerView) {
         this.context = context;
         this.activity = activity;
         this.videos = videos;
+        this.recyclerView = recyclerView;
     }
 
     @Override
@@ -103,6 +105,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
                                             if (f.getName().contentEquals(fileName)) {
                                                 Log.i(TAG, "onSuccess: Video " + fileName);
                                                 f.delete();
+                                                recyclerView.removeViewAt(holder.getAdapterPosition());
+                                                recyclerView.getAdapter().notifyDataSetChanged();
                                             }
                                         }
                                     }
@@ -128,6 +132,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
                                             if (f.getName().equals(fileName)) {
                                                 Log.i(TAG, "onSuccess: Video " + fileName);
                                                 f.delete();
+                                                recyclerView.removeViewAt(holder.getAdapterPosition());
+                                                recyclerView.getAdapter().notifyDataSetChanged();
                                             }
                                         }
                                     }

@@ -38,11 +38,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     private Context context;
     private Activity activity;
     private ArrayList<File> images;
+    private RecyclerView recyclerView;
 
-    public ImageAdapter(Context context, ArrayList<File> images, Activity activity) {
+    public ImageAdapter(Context context, ArrayList<File> images, Activity activity, RecyclerView recyclerView) {
         this.context = context;
         this.images = images;
         this.activity = activity;
+        this.recyclerView = recyclerView;
     }
 
     @Override
@@ -101,6 +103,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                                             for (File f : dir.listFiles()) {
                                                 if (f.getName().contentEquals(fileName)) {
                                                     f.delete();
+                                                    recyclerView.removeViewAt(holder.getAdapterPosition());
+                                                    recyclerView.getAdapter().notifyDataSetChanged();
                                                 }
                                             }
                                         }
@@ -123,6 +127,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                                             for (File f : dir.listFiles()) {
                                                 if (f.getName().equals(fileName)) {
                                                     f.delete();
+                                                    recyclerView.removeViewAt(holder.getAdapterPosition());
+                                                    recyclerView.getAdapter().notifyDataSetChanged();
                                                 }
                                             }
                                         }

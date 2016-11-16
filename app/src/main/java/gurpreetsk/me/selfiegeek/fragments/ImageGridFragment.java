@@ -1,11 +1,15 @@
 package gurpreetsk.me.selfiegeek.fragments;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +32,8 @@ import gurpreetsk.me.selfiegeek.TakeImageActivity;
 import gurpreetsk.me.selfiegeek.adapter.ImageAdapter;
 import gurpreetsk.me.selfiegeek.service.DownloadService;
 
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.IMAGE_BROADCAST;
+
 public class ImageGridFragment extends Fragment {
 
     private static final String TAG = "ImageGridFragment";
@@ -36,6 +42,7 @@ public class ImageGridFragment extends Fragment {
     ImageAdapter adapter;
     FloatingActionButton fab;
     SwipeRefreshLayout swipeRefreshLayout;
+    ImageUpdateReceiver imageUpdateReceiver;
 
     ArrayList<File> imageList = new ArrayList<>();
 
@@ -46,6 +53,15 @@ public class ImageGridFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        imageUpdateReceiver = new ImageUpdateReceiver();
+        IntentFilter filter = new IntentFilter(IMAGE_BROADCAST);
+        getContext().registerReceiver(imageUpdateReceiver, filter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getContext().unregisterReceiver(imageUpdateReceiver);
     }
 
     @Override
@@ -64,7 +80,7 @@ public class ImageGridFragment extends Fragment {
                 startActivity(new Intent(getContext(), TakeImageActivity.class));
             }
         });
-        adapter = new ImageAdapter(getContext(), imageList, getActivity());
+        adapter = new ImageAdapter(getContext(), imageList, getActivity(), recyclerView);
 
         getImages();
 
@@ -75,14 +91,15 @@ public class ImageGridFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                imageList.clear();
+                if (!imageList.isEmpty())
+                    imageList.clear();
                 getImages();
+                adapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent),
                 getResources().getColor(R.color.colorPrimary),
-                getResources().getColor(R.color.colorPrimaryDark),
                 getResources().getColor(R.color.colorPrimaryLight));
 
         if (imageList.isEmpty()) {
@@ -99,8 +116,10 @@ public class ImageGridFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        imageList.clear();
+        if (!imageList.isEmpty())
+            imageList.clear();
         getImages();
+        adapter.notifyDataSetChanged();
     }
 
     private void getImages() {
@@ -126,7 +145,7 @@ public class ImageGridFragment extends Fragment {
 
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                //TODO: refresh layout, download stuff and store in cache
+                //TODO: make download stuff and store in cache work properly
                 Intent downloadIntent = new Intent(getContext(), DownloadService.class);
                 getContext().startService(downloadIntent);
                 break;
@@ -138,4 +157,15 @@ public class ImageGridFragment extends Fragment {
         }
         return true;
     }
+
+
+    private class ImageUpdateReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i(TAG, "onReceive: Inside broadcast receiver");
+            //TODO: THE FIRST IMAGE CLICKED NOT SHOWING IN FRAGMENT UNLESS ACTIVITY DESTROYED
+            adapter.notifyDataSetChanged();
+        }
+    }
+
 }

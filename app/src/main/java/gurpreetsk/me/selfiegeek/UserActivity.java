@@ -52,7 +52,7 @@ public class UserActivity extends AppCompatActivity {
 
         String username = ETusername.getText().toString();
         String password = ETpassword.getText().toString();
-        if (username.length()<4 || password.length()<4)
+        if (username.length() < 4 || password.length() < 4)
             Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
         else {
             mKinveyClient.user().login(username, password, new KinveyUserCallback() {
@@ -60,6 +60,7 @@ public class UserActivity extends AppCompatActivity {
                 public void onSuccess(User user) {
                     Log.i(TAG, "onSuccess: User logged-in  " + user.getId());
                     userID.edit().putString(SHARED_PREF_KEY, user.getId()).apply();
+                    Toast.makeText(UserActivity.this, "Hi " + user.getUsername(), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(UserActivity.this, GridActivity.class));
                     finish();
                 }
@@ -76,7 +77,7 @@ public class UserActivity extends AppCompatActivity {
     public void signupUser(View v) {
         String username = ETusername.getText().toString();
         String password = ETpassword.getText().toString();
-        if (username.length()<4 || password.length()<4)
+        if (username.length() < 4 || password.length() < 4)
             Toast.makeText(this, "Please input credentials to sign-up", Toast.LENGTH_SHORT).show();
         else {
             mKinveyClient.user().create(username, password, new KinveyUserCallback() {
@@ -84,6 +85,7 @@ public class UserActivity extends AppCompatActivity {
                 public void onSuccess(User user) {
                     Log.i(TAG, "onSuccess: User created  " + user.getId());
                     userID.edit().putString(SHARED_PREF_KEY, user.getId()).apply();
+                    Toast.makeText(UserActivity.this, "Hi " + user.getUsername(), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(UserActivity.this, GridActivity.class));
                     finish();
                 }
