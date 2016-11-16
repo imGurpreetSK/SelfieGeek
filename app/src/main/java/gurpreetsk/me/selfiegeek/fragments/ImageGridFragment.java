@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,6 +35,7 @@ public class ImageGridFragment extends Fragment {
     RecyclerView recyclerView;
     ImageAdapter adapter;
     FloatingActionButton fab;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     ArrayList<File> imageList = new ArrayList<>();
 
@@ -53,6 +55,7 @@ public class ImageGridFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_image_grid, container, false);
 
         recyclerView = (RecyclerView) v.findViewById(R.id.imageRecyclerView);
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         TextView empty = (TextView) v.findViewById(R.id.empty_imageRV);
         fab = (FloatingActionButton) v.findViewById(R.id.fab_take_image);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -69,12 +72,23 @@ public class ImageGridFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                imageList.clear();
+                getImages();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent),
+                getResources().getColor(R.color.colorPrimary),
+                getResources().getColor(R.color.colorPrimaryDark),
+                getResources().getColor(R.color.colorPrimaryLight));
+
         if (imageList.isEmpty()) {
-            recyclerView.invalidate();
             recyclerView.setVisibility(View.GONE);
             empty.setVisibility(View.VISIBLE);
         } else {
-            recyclerView.invalidate();
             recyclerView.setVisibility(View.VISIBLE);
             empty.setVisibility(View.GONE);
         }
@@ -90,7 +104,6 @@ public class ImageGridFragment extends Fragment {
     }
 
     private void getImages() {
-
         File dir = new File(getString(R.string.CACHE));
         Log.i(TAG, "getImages: " + dir.getName());
         if (dir.exists()) {

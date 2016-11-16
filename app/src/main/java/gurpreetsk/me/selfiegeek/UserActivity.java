@@ -50,45 +50,51 @@ public class UserActivity extends AppCompatActivity {
 
     public void loginUser(View v) {
 
-        mKinveyClient.user().login(ETusername.getText().toString(), ETpassword.getText().toString(), new KinveyUserCallback() {
-            @Override
-            public void onSuccess(User user) {
-                Log.i(TAG, "onSuccess: User logged-in  " + user.getId());
-                userID.edit().putString(SHARED_PREF_KEY, user.getId()).apply();
-                startActivity(new Intent(UserActivity.this, GridActivity.class));
-                finish();
-            }
+        String username = ETusername.getText().toString();
+        String password = ETpassword.getText().toString();
+        if (username.length()<4 || password.length()<4)
+            Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+        else {
+            mKinveyClient.user().login(username, password, new KinveyUserCallback() {
+                @Override
+                public void onSuccess(User user) {
+                    Log.i(TAG, "onSuccess: User logged-in  " + user.getId());
+                    userID.edit().putString(SHARED_PREF_KEY, user.getId()).apply();
+                    startActivity(new Intent(UserActivity.this, GridActivity.class));
+                    finish();
+                }
 
-            @Override
-            public void onFailure(Throwable throwable) {
-                Toast.makeText(UserActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
-                Log.i(TAG, "onFailure: Login  " + throwable);
-            }
-        });
-
+                @Override
+                public void onFailure(Throwable throwable) {
+                    Toast.makeText(UserActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, "onFailure: Login  " + throwable);
+                }
+            });
+        }
     }
 
     public void signupUser(View v) {
         String username = ETusername.getText().toString();
         String password = ETpassword.getText().toString();
-        if (username.equals("") || password.equals(""))
+        if (username.length()<4 || password.length()<4)
             Toast.makeText(this, "Please input credentials to sign-up", Toast.LENGTH_SHORT).show();
-        mKinveyClient.user().create(username, password, new KinveyUserCallback() {
-            @Override
-            public void onSuccess(User user) {
-                Log.i(TAG, "onSuccess: User created  " + user.getId());
-                userID.edit().putString(SHARED_PREF_KEY, user.getId()).apply();
-                startActivity(new Intent(UserActivity.this, GridActivity.class));
-                finish();
-            }
+        else {
+            mKinveyClient.user().create(username, password, new KinveyUserCallback() {
+                @Override
+                public void onSuccess(User user) {
+                    Log.i(TAG, "onSuccess: User created  " + user.getId());
+                    userID.edit().putString(SHARED_PREF_KEY, user.getId()).apply();
+                    startActivity(new Intent(UserActivity.this, GridActivity.class));
+                    finish();
+                }
 
-            @Override
-            public void onFailure(Throwable throwable) {
-                Toast.makeText(UserActivity.this, "Signup failed\nUsername already exists", Toast.LENGTH_SHORT).show();
-                Log.i(TAG, "onFailure: Signup  " + throwable);
-            }
-        });
-
+                @Override
+                public void onFailure(Throwable throwable) {
+                    Toast.makeText(UserActivity.this, "Signup failed\nUsername already exists", Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, "onFailure: Signup  " + throwable);
+                }
+            });
+        }
     }
 
     private void getHandles() {

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,6 +33,7 @@ public class VideoGridFragment extends Fragment {
     RecyclerView recyclerView;
     VideoAdapter adapter;
     FloatingActionButton fab;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     ArrayList<File> videoList = new ArrayList<>();
 
@@ -52,6 +54,7 @@ public class VideoGridFragment extends Fragment {
         recyclerView = (RecyclerView) v.findViewById(R.id.videoRecyclerView);
         TextView empty = (TextView) v.findViewById(R.id.empty_imageRV);
         fab = (FloatingActionButton) v.findViewById(R.id.fab_record_video);
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.videoSwipeContainer);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,12 +69,23 @@ public class VideoGridFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                videoList.clear();
+                getVideos();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent),
+                getResources().getColor(R.color.colorPrimary),
+                getResources().getColor(R.color.colorPrimaryDark),
+                getResources().getColor(R.color.colorPrimaryLight));
+
         if (videoList.isEmpty()) {
-            recyclerView.invalidate();
             recyclerView.setVisibility(View.GONE);
             empty.setVisibility(View.VISIBLE);
         } else{
-            recyclerView.invalidate();
             recyclerView.setVisibility(View.VISIBLE);
             empty.setVisibility(View.GONE);
         }

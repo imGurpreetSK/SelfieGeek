@@ -19,6 +19,7 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         app:met_floatingLabel="highlight"
         app:met_singleLineEllipsis="true"
+        app:met_minCharacters="4"
         app:met_baseColor="@color/colorPrimary"
         app:met_primaryColor="@color/colorPrimary"
         app:met_errorColor="@color/colorAccent"
@@ -31,14 +32,16 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         app:met_floatingLabel="highlight"
         app:met_singleLineEllipsis="true"
+        app:met_minCharacters="4"
         android:inputType="textPassword"
         android:hint="@string/enter_password" />
 
     <Button
         android:id="@+id/button_login"
         android:layout_width="wrap_content"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="48dp"
         android:layout_gravity="center"
+        android:background="@color/colorAccent"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:onClick="loginUser"
         android:text="@string/login" />
