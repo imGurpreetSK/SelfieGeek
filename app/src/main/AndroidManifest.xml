@@ -31,6 +31,7 @@
             android:theme="@style/AppTheme.NoActionBar.BlackStatusBar" />
 
         <service android:name=".service.UploadService" />
+        <service android:name=".service.DownloadService" />
 
         <!-- Camera activities -->
         <activity

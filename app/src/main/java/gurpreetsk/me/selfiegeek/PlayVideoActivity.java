@@ -1,7 +1,6 @@
 package gurpreetsk.me.selfiegeek;
 
 import android.net.Uri;
-import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -9,7 +8,7 @@ import android.widget.Toast;
 import com.afollestad.easyvideoplayer.EasyVideoCallback;
 import com.afollestad.easyvideoplayer.EasyVideoPlayer;
 
-import static gurpreetsk.me.selfiegeek.utils.Constants.VIDEO_INTENT_EXTRA;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.VIDEO_INTENT_EXTRA;
 
 public class PlayVideoActivity extends AppCompatActivity {
 

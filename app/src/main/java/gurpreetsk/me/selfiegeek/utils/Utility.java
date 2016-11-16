@@ -6,8 +6,8 @@ import android.net.Uri;
 
 import gurpreetsk.me.selfiegeek.service.UploadService;
 
-import static gurpreetsk.me.selfiegeek.utils.Constants.SERVICE_EXTRA;
-import static gurpreetsk.me.selfiegeek.utils.Constants.SERVICE_FILENAME_EXTRA;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.SERVICE_EXTRA;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.SERVICE_FILENAME_EXTRA;
 
 /**
  * Created by Gurpreet on 15/11/16.

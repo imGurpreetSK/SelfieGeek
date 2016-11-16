@@ -16,6 +16,8 @@ import com.kinvey.android.callback.KinveyUserCallback;
 import com.kinvey.java.User;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.SHARED_PREF_KEY;
+
 public class UserActivity extends AppCompatActivity {
 
     private static final String TAG = "UserActivity";
@@ -35,6 +37,8 @@ public class UserActivity extends AppCompatActivity {
         //One time Kinvey client init
         mKinveyClient = new Client.Builder(getApplicationContext()).build();
 
+        userID = this.getSharedPreferences(getPackageName(), MODE_PRIVATE);
+
         if (mKinveyClient.user().isUserLoggedIn()) {
             startActivity(new Intent(UserActivity.this, GridActivity.class));
             finish();
@@ -50,7 +54,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onSuccess(User user) {
                 Log.i(TAG, "onSuccess: User logged-in  " + user.getId());
-                userID = getApplicationContext().getSharedPreferences(user.getId(), MODE_PRIVATE);
+                userID.edit().putString(SHARED_PREF_KEY, user.getId()).apply();
                 startActivity(new Intent(UserActivity.this, GridActivity.class));
                 finish();
             }
@@ -73,8 +77,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onSuccess(User user) {
                 Log.i(TAG, "onSuccess: User created  " + user.getId());
-                //TODO: set readable mode
-                userID = getApplicationContext().getSharedPreferences(user.getId(), MODE_PRIVATE);
+                userID.edit().putString(SHARED_PREF_KEY, user.getId()).apply();
                 startActivity(new Intent(UserActivity.this, GridActivity.class));
                 finish();
             }

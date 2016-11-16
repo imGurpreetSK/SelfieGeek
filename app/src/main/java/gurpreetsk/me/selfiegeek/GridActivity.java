@@ -1,5 +1,6 @@
 package gurpreetsk.me.selfiegeek;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -8,9 +9,12 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import gurpreetsk.me.selfiegeek.fragments.ImageGridFragment;
 import gurpreetsk.me.selfiegeek.fragments.VideoGridFragment;
+
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.SHARED_PREF_KEY;
 
 public class GridActivity extends AppCompatActivity {
 

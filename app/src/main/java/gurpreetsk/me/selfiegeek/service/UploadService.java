@@ -18,8 +18,8 @@ import java.io.IOException;
 
 import id.zelory.compressor.Compressor;
 
-import static gurpreetsk.me.selfiegeek.utils.Constants.SERVICE_EXTRA;
-import static gurpreetsk.me.selfiegeek.utils.Constants.SERVICE_FILENAME_EXTRA;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.SERVICE_EXTRA;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.SERVICE_FILENAME_EXTRA;
 
 /**
  * Created by Gurpreet on 13/11/16.

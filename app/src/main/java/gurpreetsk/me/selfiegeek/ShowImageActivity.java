@@ -9,7 +9,7 @@ import java.io.File;
 
 import id.zelory.compressor.Compressor;
 
-import static gurpreetsk.me.selfiegeek.utils.Constants.IMAGE_INTENT_EXTRA;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.IMAGE_INTENT_EXTRA;
 
 public class ShowImageActivity extends AppCompatActivity {
 

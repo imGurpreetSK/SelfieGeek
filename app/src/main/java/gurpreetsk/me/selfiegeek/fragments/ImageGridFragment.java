@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.transition.Visibility;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +25,7 @@ import java.util.ArrayList;
 import gurpreetsk.me.selfiegeek.R;
 import gurpreetsk.me.selfiegeek.TakeImageActivity;
 import gurpreetsk.me.selfiegeek.adapter.ImageAdapter;
+import gurpreetsk.me.selfiegeek.service.DownloadService;
 
 public class ImageGridFragment extends Fragment {
 
@@ -73,7 +73,7 @@ public class ImageGridFragment extends Fragment {
             recyclerView.invalidate();
             recyclerView.setVisibility(View.GONE);
             empty.setVisibility(View.VISIBLE);
-        } else{
+        } else {
             recyclerView.invalidate();
             recyclerView.setVisibility(View.VISIBLE);
             empty.setVisibility(View.GONE);
@@ -104,18 +104,18 @@ public class ImageGridFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
         inflater.inflate(R.menu.main, menu);
         super.onCreateOptionsMenu(menu, inflater);
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_refresh:
                 //TODO: refresh layout, download stuff and store in cache
+                Intent downloadIntent = new Intent(getContext(), DownloadService.class);
+                getContext().startService(downloadIntent);
                 break;
             case R.id.settings:
                 Toast toast = Toast.makeText(getContext(), "Created By Gurpreet Singh\nfor SocialCops task", Toast.LENGTH_SHORT);

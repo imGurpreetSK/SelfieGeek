@@ -3,7 +3,6 @@ package gurpreetsk.me.selfiegeek;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -15,13 +14,8 @@ import android.widget.Toast;
 import com.afollestad.materialcamera.MaterialCamera;
 import com.kinvey.android.Client;
 
-import gurpreetsk.me.selfiegeek.service.UploadService;
-import gurpreetsk.me.selfiegeek.utils.Utility;
-
-import static gurpreetsk.me.selfiegeek.utils.Constants.CAMERA_STILL;
-import static gurpreetsk.me.selfiegeek.utils.Constants.MY_PERMISSIONS_REQUEST_ACCESS_CAMERA;
-import static gurpreetsk.me.selfiegeek.utils.Constants.SERVICE_EXTRA;
-import static gurpreetsk.me.selfiegeek.utils.Constants.SERVICE_FILENAME_EXTRA;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.CAMERA_STILL;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.MY_PERMISSIONS_REQUEST_ACCESS_CAMERA;
 import static gurpreetsk.me.selfiegeek.utils.Utility.getFileFromCacheAndUpload;
 import static gurpreetsk.me.selfiegeek.utils.permissions.askCameraPermission;
 

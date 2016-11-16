@@ -1,10 +1,8 @@
 package gurpreetsk.me.selfiegeek;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +13,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialcamera.MaterialCamera;
 
-import static gurpreetsk.me.selfiegeek.utils.Constants.CAMERA_RQ;
-import static gurpreetsk.me.selfiegeek.utils.Constants.MY_PERMISSIONS_REQUEST_ACCESS_CAMERA;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.CAMERA_RQ;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.MY_PERMISSIONS_REQUEST_ACCESS_CAMERA;
 import static gurpreetsk.me.selfiegeek.utils.Utility.getFileFromCacheAndUpload;
 import static gurpreetsk.me.selfiegeek.utils.permissions.askCameraPermission;
 import static gurpreetsk.me.selfiegeek.utils.permissions.askMicrophonePermission;

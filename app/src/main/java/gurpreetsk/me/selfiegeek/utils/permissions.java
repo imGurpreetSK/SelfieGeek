@@ -6,8 +6,8 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
-import static gurpreetsk.me.selfiegeek.utils.Constants.MY_PERMISSIONS_REQUEST_ACCESS_CAMERA;
-import static gurpreetsk.me.selfiegeek.utils.Constants.MY_PERMISSIONS_REQUEST_RECORD_AUDIO;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.MY_PERMISSIONS_REQUEST_ACCESS_CAMERA;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.MY_PERMISSIONS_REQUEST_RECORD_AUDIO;
 
 /**
  * Created by Gurpreet on 12/11/16.

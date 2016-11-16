@@ -100,10 +100,8 @@ public class VideoGridFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
         inflater.inflate(R.menu.main, menu);
         super.onCreateOptionsMenu(menu, inflater);
-
     }
 
     @Override
@@ -114,6 +112,9 @@ public class VideoGridFragment extends Fragment {
                 //TODO: refresh layout, download stuff and store in cache
                 break;
             case R.id.settings:
+//                TextView tv = new TextView(getContext());
+//                tv.setText("Created By Gurpreet Singh\nfor SocialCops task");
+//                tv.setGravity(Gravity.CENTER);
                 Toast toast = Toast.makeText(getContext(), "Created By Gurpreet Singh\nfor SocialCops task", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
