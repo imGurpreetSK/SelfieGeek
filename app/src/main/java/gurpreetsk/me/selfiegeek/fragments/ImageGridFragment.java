@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +40,7 @@ public class ImageGridFragment extends Fragment {
     RecyclerView recyclerView;
     ImageAdapter adapter;
     FloatingActionButton fab;
+    TextView empty;
     SwipeRefreshLayout swipeRefreshLayout;
     ImageUpdateReceiver imageUpdateReceiver;
 
@@ -72,7 +72,7 @@ public class ImageGridFragment extends Fragment {
 
         recyclerView = (RecyclerView) v.findViewById(R.id.imageRecyclerView);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
-        TextView empty = (TextView) v.findViewById(R.id.empty_imageRV);
+        empty = (TextView) v.findViewById(R.id.empty_imageRV);
         fab = (FloatingActionButton) v.findViewById(R.id.fab_take_image);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,8 +81,6 @@ public class ImageGridFragment extends Fragment {
             }
         });
         adapter = new ImageAdapter(getContext(), imageList, getActivity(), recyclerView);
-
-        getImages();
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
@@ -102,6 +100,15 @@ public class ImageGridFragment extends Fragment {
                 getResources().getColor(R.color.colorPrimary),
                 getResources().getColor(R.color.colorPrimaryLight));
 
+        return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        getImages();
+
         if (imageList.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             empty.setVisibility(View.VISIBLE);
@@ -110,7 +117,6 @@ public class ImageGridFragment extends Fragment {
             empty.setVisibility(View.GONE);
         }
 
-        return v;
     }
 
     @Override

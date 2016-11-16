@@ -40,6 +40,7 @@ public class VideoGridFragment extends Fragment {
     RecyclerView recyclerView;
     VideoAdapter adapter;
     FloatingActionButton fab;
+    TextView empty;
     SwipeRefreshLayout swipeRefreshLayout;
     VideoUpdateReceiver videoUpdateReceiver;
 
@@ -70,7 +71,7 @@ public class VideoGridFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_video_grid, container, false);
 
         recyclerView = (RecyclerView) v.findViewById(R.id.videoRecyclerView);
-        TextView empty = (TextView) v.findViewById(R.id.empty_imageRV);
+        empty = (TextView) v.findViewById(R.id.empty_imageRV);
         fab = (FloatingActionButton) v.findViewById(R.id.fab_record_video);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.videoSwipeContainer);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -80,8 +81,6 @@ public class VideoGridFragment extends Fragment {
             }
         });
         adapter = new VideoAdapter(getContext(), getActivity(), videoList, recyclerView);
-
-        getVideos();
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
@@ -100,6 +99,15 @@ public class VideoGridFragment extends Fragment {
                 getResources().getColor(R.color.colorPrimaryDark),
                 getResources().getColor(R.color.colorPrimaryLight));
 
+        return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        getVideos();
+
         if (videoList.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             empty.setVisibility(View.VISIBLE);
@@ -108,7 +116,6 @@ public class VideoGridFragment extends Fragment {
             empty.setVisibility(View.GONE);
         }
 
-        return v;
     }
 
     @Override
