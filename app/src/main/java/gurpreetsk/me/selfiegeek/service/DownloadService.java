@@ -1,11 +1,14 @@
 package gurpreetsk.me.selfiegeek.service;
 
+import android.Manifest;
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import com.kinvey.android.Client;
@@ -20,8 +23,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import gurpreetsk.me.selfiegeek.R;
 
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.PACKAGE;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.SHARED_PREF_KEY;
@@ -42,50 +43,51 @@ public class DownloadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         String userID = getSharedPreferences("gurpreetsk.me.selfiegeek", MODE_PRIVATE).getString(SHARED_PREF_KEY, "GURPREET");
-//        String fileName = "IMG_20161113_124347";
 
         Query q = new Query();
         Object[] find = {"{\"creator\":\"" + userID + "\"}"};
         q.all("_acl", find);
 
-        try {
-            File file = new File(Environment.getExternalStorageDirectory().getPath()+"/"+PACKAGE);
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-            FileOutputStream fos = new FileOutputStream(file + "/" + timeStamp +".jpg");
-            new Client.Builder(getApplicationContext()).build().file().download(q,
-                    fos,
-                    new DownloaderProgressListener() {
-                        @Override
-                        public void progressChanged(MediaHttpDownloader mediaHttpDownloader) throws IOException {
-                        }
+        int storagePermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (storagePermissionCheck != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(DownloadService.this, "Provide storage permission for downloads", Toast.LENGTH_SHORT).show();
+        } else
+            try {
+                File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" + PACKAGE);
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+                FileOutputStream fos = new FileOutputStream(file + "/" + timeStamp + ".jpg");
+                new Client.Builder(getApplicationContext()).build().file().download(q,
+                        fos,
+                        new DownloaderProgressListener() {
+                            @Override
+                            public void progressChanged(MediaHttpDownloader mediaHttpDownloader) throws IOException {
+                            }
 
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            new Handler().post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(DownloadService.this, "success!!!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                new Handler().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(DownloadService.this, "success!!!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
 
-                        @Override
-                        public void onFailure(Throwable throwable) {
+                            @Override
+                            public void onFailure(Throwable throwable) {
 
-                            new Handler(Looper.getMainLooper()) {
-                                @Override
-                                public void handleMessage(Message message) {
-                                    Toast.makeText(DownloadService.this, "success: not-much :(", Toast.LENGTH_SHORT).show();
-                                }
-                            };
+                                new Handler(Looper.getMainLooper()) {
+                                    @Override
+                                    public void handleMessage(Message message) {
+                                        Toast.makeText(DownloadService.this, "success: not-much :(", Toast.LENGTH_SHORT).show();
+                                    }
+                                };
 
-                            throwable.printStackTrace();
-                        }
-                    });
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
+                                throwable.printStackTrace();
+                            }
+                        });
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
     }
 }

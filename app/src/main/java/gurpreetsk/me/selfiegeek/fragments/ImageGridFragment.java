@@ -1,12 +1,15 @@
 package gurpreetsk.me.selfiegeek.fragments;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,6 +43,7 @@ public class ImageGridFragment extends Fragment {
     FloatingActionButton fab;
     TextView empty;
     SwipeRefreshLayout swipeRefreshLayout;
+    int storagePermissionCheck;
 
     ArrayList<File> imageList = new ArrayList<>();
 
@@ -69,6 +73,8 @@ public class ImageGridFragment extends Fragment {
             }
         });
         adapter = new ImageAdapter(getContext(), imageList, getActivity(), recyclerView);
+
+        storagePermissionCheck = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
@@ -117,14 +123,16 @@ public class ImageGridFragment extends Fragment {
     }
 
     private void getImages() {
-        File dir = new File(Environment.getExternalStorageDirectory().getPath()+"/"+PACKAGE);
-        Log.i(TAG, "getImages: " + dir.getName());
-        if (dir.exists()) {
-            for (File f : dir.listFiles()) {
-                if (f.getName().contains("IMG"))
-                    imageList.add(f);
+        if(storagePermissionCheck== PackageManager.PERMISSION_GRANTED) {
+            File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/" + PACKAGE);
+            Log.i(TAG, "getImages: " + dir.getName());
+            if (dir.exists()) {
+                for (File f : dir.listFiles()) {
+                    if (f.getName().contains("IMG"))
+                        imageList.add(f);
+                }
+                adapter.notifyDataSetChanged();
             }
-            adapter.notifyDataSetChanged();
         }
     }
 

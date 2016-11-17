@@ -1,11 +1,14 @@
 package gurpreetsk.me.selfiegeek.fragments;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,6 +43,8 @@ public class VideoGridFragment extends Fragment {
     TextView empty;
     SwipeRefreshLayout swipeRefreshLayout;
 
+    int storagePermissionCheck ;
+
     ArrayList<File> videoList = new ArrayList<>();
 
     public VideoGridFragment() {
@@ -68,6 +73,8 @@ public class VideoGridFragment extends Fragment {
             }
         });
         adapter = new VideoAdapter(getContext(), getActivity(), videoList, recyclerView);
+
+        storagePermissionCheck = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
@@ -113,14 +120,16 @@ public class VideoGridFragment extends Fragment {
     }
 
     private void getVideos() {
-        File dir = new File(Environment.getExternalStorageDirectory().getPath()+"/"+PACKAGE);
-        Log.i(TAG, "getVideos: " + dir.getName());
-        if (dir.exists()) {
-            for (File f : dir.listFiles()) {
-                if (f.getName().contains("VID"))
-                    videoList.add(f);
+        if (storagePermissionCheck == PackageManager.PERMISSION_GRANTED) {
+            File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/" + PACKAGE);
+            Log.i(TAG, "getVideos: " + dir.getName());
+            if (dir.exists()) {
+                for (File f : dir.listFiles()) {
+                    if (f.getName().contains("VID"))
+                        videoList.add(f);
+                }
+                adapter.notifyDataSetChanged();
             }
-            adapter.notifyDataSetChanged();
         }
     }
 
