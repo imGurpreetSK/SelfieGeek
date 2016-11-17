@@ -55,7 +55,7 @@ public class TakeImageActivity extends AppCompatActivity {
                 Toast.makeText(this, "Image upload started", Toast.LENGTH_LONG).show();
                 Log.i(TAG, "onActivityResult: " + data.getDataString());
                 String name = data.getDataString().substring(51);
-                Log.d(TAG, "onActivityResult: stringname"+name);
+                Log.d(TAG, "onActivityResult: stringname "+name);
                 getFileFromCacheAndUpload(name, data.getData(), getApplicationContext());
                 finish();
             } else if (data != null) {
