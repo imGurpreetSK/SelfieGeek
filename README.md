@@ -1,3 +1,3 @@
 # SelfieGeek
 
-Task given by [SocialCops](htts://SocialCops.com)
+Task given by SocialCops
