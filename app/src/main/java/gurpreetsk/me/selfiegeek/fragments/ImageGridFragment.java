@@ -95,7 +95,7 @@ public class ImageGridFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        getImages();
+//        getImages();
 
         if (imageList.isEmpty()) {
             recyclerView.setVisibility(View.GONE);

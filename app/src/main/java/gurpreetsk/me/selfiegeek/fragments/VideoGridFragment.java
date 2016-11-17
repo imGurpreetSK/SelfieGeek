@@ -98,7 +98,7 @@ public class VideoGridFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        getVideos();
+//        getVideos();
 
         if (videoList.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
