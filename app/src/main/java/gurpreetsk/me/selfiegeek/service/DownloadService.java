@@ -2,6 +2,7 @@ package gurpreetsk.me.selfiegeek.service;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -22,6 +23,7 @@ import java.util.Locale;
 
 import gurpreetsk.me.selfiegeek.R;
 
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.PACKAGE;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.SHARED_PREF_KEY;
 
 /**
@@ -47,7 +49,7 @@ public class DownloadService extends IntentService {
         q.all("_acl", find);
 
         try {
-            File file = new File(getString(R.string.CACHE));
+            File file = new File(Environment.getExternalStorageDirectory().getPath()+"/"+PACKAGE);
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
             FileOutputStream fos = new FileOutputStream(file + "/" + timeStamp +".jpg");
             new Client.Builder(getApplicationContext()).build().file().download(q,
