@@ -51,12 +51,12 @@ public class UploadService extends IntentService {
 
         try {
             if (fileName.contains("IMG")) {
-                metadata = new FileMetaData(fileName + ".jpg");
-                metadata.setFileName(fileName + ".jpg");
+                metadata = new FileMetaData(fileName );
+                metadata.setFileName(fileName);
             }
             else if (fileName.contains("VID")){
-                metadata = new FileMetaData(fileName + ".mp4");
-                metadata.setFileName(fileName + ".mp4");
+                metadata = new FileMetaData(fileName);
+                metadata.setFileName(fileName);
             }
             metadata.setPublic(false);  //set the file not to be publicly accessible
 

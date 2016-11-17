@@ -99,7 +99,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                                 new Client.Builder(context).build().file().delete(metadata, new KinveyDeleteCallback() {
                                     @Override
                                     public void onSuccess(KinveyDeleteResponse kinveyDeleteResponse) {
-                                        File dir = new File(Environment.getExternalStorageDirectory().getPath());
+                                        File dir = new File(context.getCacheDir().getPath());
                                         if (dir.exists()) {
                                             for (File f : dir.listFiles()) {
                                                 if (f.getName().contentEquals(fileName)) {
@@ -123,7 +123,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         final String fileName = images.get(holder.getAdapterPosition()).getName();
-                                        File dir = new File(Environment.getExternalStorageDirectory().getPath());
+                                        File dir = new File(context.getCacheDir().getPath());
                                         if (dir.exists()) {
                                             for (File f : dir.listFiles()) {
                                                 if (f.getName().equals(fileName)) {

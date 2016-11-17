@@ -3,11 +3,11 @@ package gurpreetsk.me.selfiegeek;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,15 +15,10 @@ import android.widget.Toast;
 import com.afollestad.materialcamera.MaterialCamera;
 
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.CAMERA_RQ;
-import static gurpreetsk.me.selfiegeek.utils.KeyConstants.IMAGE_BROADCAST;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.MY_PERMISSIONS_REQUEST_ACCESS_CAMERA;
-import static gurpreetsk.me.selfiegeek.utils.KeyConstants.MY_PERMISSIONS_REQUEST_ACCESS_STORAGE;
-import static gurpreetsk.me.selfiegeek.utils.KeyConstants.PACKAGE;
-import static gurpreetsk.me.selfiegeek.utils.KeyConstants.VIDEO_BROADCAST;
 import static gurpreetsk.me.selfiegeek.utils.Utility.getFileFromCacheAndUpload;
 import static gurpreetsk.me.selfiegeek.utils.permissions.askCameraPermission;
 import static gurpreetsk.me.selfiegeek.utils.permissions.askMicrophonePermission;
-import static gurpreetsk.me.selfiegeek.utils.permissions.askStoragePermission;
 
 public class RecordVideoActivity extends AppCompatActivity {
 
@@ -34,11 +29,6 @@ public class RecordVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_image);
         int cameraPermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        int storagePermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (storagePermissionCheck != PackageManager.PERMISSION_GRANTED) {
-            askStoragePermission(this);
-
-        }else {
             if (cameraPermissionCheck != PackageManager.PERMISSION_GRANTED) {
                 askCameraPermission(this);
                 askMicrophonePermission(this);
@@ -47,13 +37,12 @@ public class RecordVideoActivity extends AppCompatActivity {
                         .maxAllowedFileSize(1024 * 1024 * 20)    //20MB
                         .showPortraitWarning(false)
                         .videoPreferredAspect(4f / 3f)
-                        .saveDir(Environment.getExternalStorageDirectory().getPath()+"/"+PACKAGE)
+                        .saveDir(getCacheDir().getPath())
                         .videoPreferredHeight(720)
                         .start(CAMERA_RQ);
                 TextView tv = (TextView) findViewById(R.id.textview_image_activity);
                 tv.setText(getResources().getString(R.string.thanks_for_camera_permission));
             }
-        }
     }
 
     @Override
@@ -65,7 +54,7 @@ public class RecordVideoActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(this, "Upload started", Toast.LENGTH_LONG).show();
                 Log.i(TAG, "onActivityResult: " + data.getDataString());
-                String name = data.getDataString().substring(10);
+                String name = data.getDataString().substring(51);
                 getFileFromCacheAndUpload(name, data.getData(), getApplicationContext());
                 finish();
             } else if (data != null) {
@@ -85,13 +74,6 @@ public class RecordVideoActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 } else {
                     Toast.makeText(this, "Camera access permission needed to take image", Toast.LENGTH_SHORT).show();
-                }
-            }
-            case MY_PERMISSIONS_REQUEST_ACCESS_STORAGE: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                } else {
-                    Toast.makeText(this, getString(R.string.storage_permission_needed), Toast.LENGTH_SHORT).show();
                 }
             }
         }

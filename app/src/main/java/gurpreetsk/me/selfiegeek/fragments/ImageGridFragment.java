@@ -4,6 +4,7 @@ package gurpreetsk.me.selfiegeek.fragments;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -32,8 +33,6 @@ import gurpreetsk.me.selfiegeek.TakeImageActivity;
 import gurpreetsk.me.selfiegeek.adapter.ImageAdapter;
 import gurpreetsk.me.selfiegeek.service.DownloadService;
 
-import static gurpreetsk.me.selfiegeek.utils.KeyConstants.PACKAGE;
-
 public class ImageGridFragment extends Fragment {
 
     private static final String TAG = "ImageGridFragment";
@@ -43,7 +42,6 @@ public class ImageGridFragment extends Fragment {
     FloatingActionButton fab;
     TextView empty;
     SwipeRefreshLayout swipeRefreshLayout;
-    int storagePermissionCheck;
 
     ArrayList<File> imageList = new ArrayList<>();
 
@@ -74,8 +72,6 @@ public class ImageGridFragment extends Fragment {
         });
         adapter = new ImageAdapter(getContext(), imageList, getActivity(), recyclerView);
 
-        storagePermissionCheck = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -101,6 +97,8 @@ public class ImageGridFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        if (!imageList.isEmpty())
+            imageList.clear();
         getImages();
 
         if (imageList.isEmpty()) {
@@ -116,15 +114,11 @@ public class ImageGridFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (!imageList.isEmpty())
-            imageList.clear();
-        getImages();
         adapter.notifyDataSetChanged();
     }
 
     private void getImages() {
-        if(storagePermissionCheck== PackageManager.PERMISSION_GRANTED) {
-            File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/" + PACKAGE);
+            File dir = new File(getContext().getCacheDir().getPath());
             Log.i(TAG, "getImages: " + dir.getName());
             if (dir.exists()) {
                 for (File f : dir.listFiles()) {
@@ -133,7 +127,6 @@ public class ImageGridFragment extends Fragment {
                 }
                 adapter.notifyDataSetChanged();
             }
-        }
     }
 
     @Override
@@ -147,7 +140,6 @@ public class ImageGridFragment extends Fragment {
 
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                //TODO: make download stuff and store in cache work properly
                 Intent downloadIntent = new Intent(getContext(), DownloadService.class);
                 getContext().startService(downloadIntent);
                 break;

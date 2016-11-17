@@ -99,7 +99,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
                             new Client.Builder(context).build().file().delete(metadata, new KinveyDeleteCallback() {
                                 @Override
                                 public void onSuccess(KinveyDeleteResponse kinveyDeleteResponse) {
-                                    File dir = new File(Environment.getExternalStorageDirectory().getPath());
+                                    File dir = new File(context.getCacheDir().getPath());
                                     if (dir.exists()) {
                                         for (File f : dir.listFiles()) {
                                             Log.i(TAG, "onSuccess: Video " + fileName);
@@ -126,7 +126,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     final String fileName = videos.get(holder.getAdapterPosition()).getName();
-                                    File dir = new File(Environment.getExternalStorageDirectory().getPath());
+                                    File dir = new File(context.getCacheDir().getPath());
                                     if (dir.exists()) {
                                         for (File f : dir.listFiles()) {
                                             Log.i(TAG, "onSuccess: Video " + fileName);
