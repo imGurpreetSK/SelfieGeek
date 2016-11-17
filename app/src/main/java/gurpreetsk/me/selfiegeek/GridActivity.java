@@ -24,6 +24,7 @@ import gurpreetsk.me.selfiegeek.fragments.VideoGridFragment;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.CAMERA_STILL;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.MY_PERMISSIONS_REQUEST_ACCESS_CAMERA;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.MY_PERMISSIONS_REQUEST_ACCESS_STORAGE;
+import static gurpreetsk.me.selfiegeek.utils.KeyConstants.PACKAGE;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.SHARED_PREF_KEY;
 import static gurpreetsk.me.selfiegeek.utils.permissions.askCameraPermission;
 import static gurpreetsk.me.selfiegeek.utils.permissions.askStoragePermission;
@@ -38,10 +39,6 @@ public class GridActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
-
-        int storagePermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (storagePermissionCheck != PackageManager.PERMISSION_GRANTED)
-            askStoragePermission(this);
 
         pager = (ViewPager) findViewById(R.id.viewPager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -81,26 +78,6 @@ public class GridActivity extends AppCompatActivity {
             return tabTitles[position];
         }
 
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_ACCESS_STORAGE: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    File dir = new File(Environment.getExternalStorageDirectory().getPath()+"/"+getPackageName());
-                    if(!dir.exists()){
-                        dir.mkdir();
-                    }
-
-                } else {
-                    Toast.makeText(this, getString(R.string.storage_permission_needed), Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
     }
 
 }

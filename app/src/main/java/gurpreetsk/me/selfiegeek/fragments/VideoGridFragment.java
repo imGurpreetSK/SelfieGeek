@@ -1,9 +1,6 @@
 package gurpreetsk.me.selfiegeek.fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -31,9 +28,7 @@ import gurpreetsk.me.selfiegeek.RecordVideoActivity;
 import gurpreetsk.me.selfiegeek.adapter.VideoAdapter;
 import gurpreetsk.me.selfiegeek.service.DownloadService;
 
-import static gurpreetsk.me.selfiegeek.utils.KeyConstants.IMAGE_BROADCAST;
 import static gurpreetsk.me.selfiegeek.utils.KeyConstants.PACKAGE;
-import static gurpreetsk.me.selfiegeek.utils.KeyConstants.VIDEO_BROADCAST;
 
 public class VideoGridFragment extends Fragment {
 
@@ -98,7 +93,7 @@ public class VideoGridFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-//        getVideos();
+        getVideos();
 
         if (videoList.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
